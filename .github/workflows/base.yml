@@ -6,6 +6,18 @@ on:
       - main 
     paths:
       - 'teste/**'   # só executa se push no diretorio teste  
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Ambiente de teste
+        type: choice
+        required: true
+        default: dev
+        options:
+          - web
+          - macOs
+          - android
+          
 
 jobs:
   info:
@@ -13,4 +25,6 @@ jobs:
     steps:
       - name: Lista diretorio
         run: ls -la
-        
+      # listar as variaveis de contexto do github
+      - name: Lista as variaveis de contexto
+        run: echo "${{ toJson(github) }}"
