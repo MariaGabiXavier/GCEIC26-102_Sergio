@@ -28,3 +28,11 @@ jobs:
       # listar as variaveis de contexto do github
       - name: Lista as variaveis de contexto
         run: echo "${{ toJson(github) }}"
+  
+  print-Dados:
+    needs: info
+    runs-on: ubuntu-latest
+    steps:
+      - name: print ok
+        run: echo "OK"
+      
