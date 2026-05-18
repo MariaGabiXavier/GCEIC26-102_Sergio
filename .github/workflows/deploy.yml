@@ -159,7 +159,7 @@ jobs:
         run: echo "💥 Pipeline falhou. Verifique os logs acima."            
 
         
-  unitTestApp:
+  deploy-app:
     needs: unitTestApi
     if: success()    
     runs-on: ubuntu-latest
