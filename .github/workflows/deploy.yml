@@ -160,7 +160,7 @@ jobs:
 
         
   deploy-app:
-    needs: unitTestApi
+    needs: deploy-api
     if: success()    
     runs-on: ubuntu-latest
     steps:
