@@ -77,6 +77,33 @@ app.post('/calcular', requireAuth, async (req, res) => {
   }
 });
 
+// -- Time_2 ETEC1 --
+app.get('/ETEC1/splash',  (req, res) => res.render('Time_2(ETEC1)/splash'));
+app.get('/ETEC1/login',   (req, res) => res.render('Time_2(ETEC1)/login', { erro: null }));
+app.post('/ETEC1/login',  (req, res) => {
+  const { usuario, senha } = req.body;
+  if (usuario === 'admin' && senha === '1234') return res.redirect('/ETEC1/calculo');
+  res.render('Time_2(ETEC1)/login', { erro: 'Usuário ou senha inválidos.' });
+});
+app.get('/ETEC1/calculo', (req, res) => res.render('Time_2(ETEC1)/calculo'));
+app.get('/ETEC1/sobre',   (req, res) => res.render('Time_2(ETEC1)/sobre'));
+app.get('/ETEC1/help',    (req, res) => res.render('Time_2(ETEC1)/help'));
+app.get('/ETEC1/logout',  (req, res) => res.redirect('/ETEC1/login'));
+app.post('/ETEC1/:rota', async (req, res) => {
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch(`${API_URL}/ETEC1/${req.params.rota}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`✅ App Doméstica rodando: http://localhost:${PORT}`);
 });

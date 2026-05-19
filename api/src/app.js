@@ -2,6 +2,9 @@ const express = require('express');
 const cors    = require('cors');
 const helmet  = require('helmet');
 
+// -- Time_2 ETEC1 --
+const etec1 = require('./Time_2(ETEC1)/etec1.route');
+
 const app = express();
 
 app.use(helmet());
@@ -45,6 +48,9 @@ app.post('/api/calcular', (req, res) => {
     return res.status(400).json({ success: false, error: err.message });
   }
 });
+
+// -- Time_2 ETEC1 --
+app.use('/ETEC1', etec1);
 
 module.exports = app
 
