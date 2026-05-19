@@ -103,7 +103,7 @@ jobs:
     if: success()    
     runs-on: ubuntu-latest
     outputs:
-      dep_api: ${{ steps.set-output.outputs.dep_api }}
+      dep_api: ${{ steps.set-output-api.outputs.dep_api }}
     steps:
       - name: Deploy_Project_API
         id: Deploy_Project_API
@@ -154,6 +154,7 @@ jobs:
 
       - name: Notify success
         if: success()
+        id: set-output-api
         run: |
           echo "dep_api=true" >> $GITHUB_OUTPUT
           echo "🚀 Deploy e health check concluídos com sucesso!"
@@ -170,7 +171,7 @@ jobs:
     if: success()       
     runs-on: ubuntu-latest
     outputs:
-      dep_app: ${{ steps.set-output.outputs.dep_app }}
+      dep_app: ${{ steps.set-output-app.outputs.dep_app }}
  
     steps:
       - name: Deploy_Project_APP
@@ -222,6 +223,7 @@ jobs:
 
       - name: Notify success
         if: success()
+        id: set-output-app
         run:  |
           echo "dep_app=true" >> $GITHUB_OUTPUT
           echo "🚀 Deploy e health check concluídos com sucesso!"
