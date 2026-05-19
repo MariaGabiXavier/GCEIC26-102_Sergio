@@ -262,7 +262,7 @@ jobs:
           # path: /home/runner/work//aula_teste_101/aula_teste_101/e2e-tests/screenshots/**/*.png
           path: /home/runner/work//GCEIC26-102/GCEIC26-102/e2e-tests/screenshots/*.png
 
- teste_funcional2:
+  teste_funcional2:
     needs: [deploy-api, deploy-app]
     runs-on: ubuntu-latest
     steps:
