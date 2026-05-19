@@ -1,39 +1,37 @@
 
-
-const TABELA = {
-	BASE_CALC: {
-		faixas: [
-		 { ate: 15, alicota: 0.01 },
-		 { ate: 30, alicota: 0.03 },
-		],
-	},
-	REFERENCIA : 20/100,
-};
-
-function calcularArea(base,altura) {
+function calcularMKD(dv, df, ml) {
+  /*2. Calcule o Markup DivisorA fórmula para chegar ao Markup Divisor (em decimal) é:
+            MKD= 100 - (DV + DF + ML)/100
+            Onde:
+            DV = percentual de despesas variáveis
+            DF = percentual de despesas fixas
+            ML = percentual de margem de lucro desejada
+  */
 	
-  if (base <= 0) throw new Error('Base com valor errado');
-  if (altura <=0) throw new Error('Altura com valor errado');
+  if (dv <= 0) throw new Error('Despesas variáveis com valor errado');
+  if (df <=0) throw new Error('Despesas fixas com valor errado');
+  if (ml <=0) throw new Error('Margem de lucro com valor errado');
   let resultado = 0;
-  resultado = base * altura;
+  resultado = 100 - (dv + df + ml) / 100;
   return resultado.toFixed(2);
 
 }
 
-function calcular(dados) {
+function calcularPrecoVenda(dados) {
   console.log(dados);	
-  const {altura = 0, largura = 0 ,} = dados;	 
-  if (altura <= 0) throw new Error('Base com valor errado');
-  if (largura <=0) throw new Error('Altura com valor errado');
-  let resultado = 0;
-  resultado = largura * altura;
-  return resultado.toFixed(2);
+  const {preco = 0, dv = 0 ,df =0, ml =0} = dados;	 
+  if (preco <= 0) throw new Error('Preço com valor errado');
+  if (dv <= 0) throw new Error('Despesas variáveis com valor errado');
+  if (df <=0) throw new Error('Despesas fixas com valor errado');
+  if (ml <=0) throw new Error('Margem de lucro com valor errado');
+  let precoVenda = 0;
+  precoVenda = preco / calcularMKD(dv, df, ml);
+  return precoVenda.toFixed(2);
 
 }
 
 
 module.exports = {
-	calcularArea,
-	TABELA,
-	calcular,
+	calcularMKD,
+	calcularPrecoVenda,
 };
