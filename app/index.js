@@ -28,9 +28,9 @@ function requireAuth(req, res, next) {
   res.redirect('/login');
 }
 
+//rota splash screen
 app.get('/', (req, res) => {
-  if (req.session.user) return res.redirect('/dashboard');
-  res.render('login', { error: null });
+  res.render('splash', { error: null });
 });
 
 app.get('/login', (req, res) => {
