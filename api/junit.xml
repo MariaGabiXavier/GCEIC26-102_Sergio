@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="12" failures="0" errors="0" time="0.593">
+  <testsuite name="calcularMKD" errors="0" failures="0" skipped="0" timestamp="2026-05-20T01:59:58" time="0.372" tests="12">
+    <testcase classname="calcularMKD deve calcular MKD com valores válidos" name="calcularMKD deve calcular MKD com valores válidos" time="0.004">
+    </testcase>
+    <testcase classname="calcularMKD deve lançar erro quando dv for menor ou igual a zero" name="calcularMKD deve lançar erro quando dv for menor ou igual a zero" time="0.021">
+    </testcase>
+    <testcase classname="calcularMKD deve lançar erro quando df for menor ou igual a zero" name="calcularMKD deve lançar erro quando df for menor ou igual a zero" time="0.001">
+    </testcase>
+    <testcase classname="calcularMKD deve lançar erro quando ml for menor ou igual a zero" name="calcularMKD deve lançar erro quando ml for menor ou igual a zero" time="0.002">
+    </testcase>
+    <testcase classname="calcularMKD deve retornar string formatada com 2 casas decimais" name="calcularMKD deve retornar string formatada com 2 casas decimais" time="0.001">
+    </testcase>
+    <testcase classname="calcularPrecoVenda deve calcular preço de venda com valores válidos" name="calcularPrecoVenda deve calcular preço de venda com valores válidos" time="0.041">
+    </testcase>
+    <testcase classname="calcularPrecoVenda deve lançar erro quando preco for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando preco for menor ou igual a zero" time="0.013">
+    </testcase>
+    <testcase classname="calcularPrecoVenda deve lançar erro quando dv for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando dv for menor ou igual a zero" time="0.013">
+    </testcase>
+    <testcase classname="calcularPrecoVenda deve lançar erro quando df for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando df for menor ou igual a zero" time="0.011">
+    </testcase>
+    <testcase classname="calcularPrecoVenda deve lançar erro quando ml for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando ml for menor ou igual a zero" time="0.014">
+    </testcase>
+    <testcase classname="calcularPrecoVenda deve usar valores padrão quando parâmetros não fornecidos" name="calcularPrecoVenda deve usar valores padrão quando parâmetros não fornecidos" time="0.013">
+    </testcase>
+    <testcase classname="calcularPrecoVenda deve retornar string formatada com 2 casas decimais" name="calcularPrecoVenda deve retornar string formatada com 2 casas decimais" time="0.005">
+    </testcase>
+  </testsuite>
+</testsuites>
