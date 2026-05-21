@@ -46,7 +46,7 @@ jobs:
         run: npm run test 
         env:
           API_URL: http://gceic26-102.onrender.com
-          SITE_URL: http://gceic26-102-app.onrender.com
+          BASE_URL: http://gceic26-102-app.onrender.com
         
       - name: verifica se fez corretamente
         working-directory: e2e-tests 
