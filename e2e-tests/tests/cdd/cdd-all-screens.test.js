@@ -1,10 +1,75 @@
 const { Builder, By, until, Key } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 const fs = require("fs");
+const http = require("http");
 const path = require("path");
 
 const BASE_URL = process.env.APP_URL || "http://localhost:3000";
 const SCREENSHOTS_DIR = path.join(__dirname, "..", "..", "screenshots");
+
+const API_CTRL = path.join(__dirname, "../../../api/src/cdd/controllers");
+
+function startMockCddApi() {
+  return new Promise((resolve) => {
+    let loginFn, calcYield, calcPayout, calcDrip;
+    try {
+      ({ login: loginFn } = require(path.join(API_CTRL, "login")));
+      ({ calculateDividendYield: calcYield } = require(path.join(API_CTRL, "dividendYield")));
+      ({ calculatePayoutRatio: calcPayout } = require(path.join(API_CTRL, "payoutRatio")));
+      ({ calculateDRIP: calcDrip } = require(path.join(API_CTRL, "drip")));
+    } catch {
+      return resolve(null);
+    }
+
+    // Permite apenas a origem da app sob teste, não qualquer origem
+    const appOrigin = new URL(BASE_URL).origin;
+
+    const server = http.createServer((req, res) => {
+      res.setHeader("Access-Control-Allow-Origin", appOrigin);
+      res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      res.setHeader("Access-Control-Allow-Private-Network", "true");
+
+      if (req.method === "OPTIONS") {
+        res.writeHead(204);
+        res.end();
+        return;
+      }
+
+      let body = "";
+      req.on("data", (chunk) => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const parsed = body ? JSON.parse(body) : {};
+          let sent = false;
+          const mockReq = { body: parsed };
+          const mockRes = {
+            _status: 200,
+            status(code) { this._status = code; return this; },
+            json(data) {
+              if (sent) return;
+              sent = true;
+              res.writeHead(this._status, { "Content-Type": "application/json" });
+              res.end(JSON.stringify(data));
+            },
+          };
+
+          if (req.url === "/api/CDD/login") loginFn(mockReq, mockRes);
+          else if (req.url === "/api/CDD/calculate/yield") calcYield(mockReq, mockRes);
+          else if (req.url === "/api/CDD/calculate/payout") calcPayout(mockReq, mockRes);
+          else if (req.url === "/api/CDD/calculate/drip") calcDrip(mockReq, mockRes);
+          else { res.writeHead(404); res.end("Not found"); }
+        } catch (e) {
+          res.writeHead(500);
+          res.end(JSON.stringify({ error: e.message }));
+        }
+      });
+    });
+
+    server.on("error", () => resolve(null)); // porta já em uso (API real rodando local)
+    server.listen(3001, "127.0.0.1", () => resolve(server));
+  });
+}
 
 if (!fs.existsSync(SCREENSHOTS_DIR))
   fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
@@ -20,6 +85,8 @@ async function buildDriver() {
     "--disable-dev-shm-usage",
     "--window-size=1280,800",
     "--disable-gpu",
+    "--disable-web-security",
+    "--allow-running-insecure-content",
   );
   driver = await new Builder()
     .forBrowser("chrome")
@@ -396,6 +463,7 @@ async function testeCddAboutHelp() {
 
 // MAIN
 async function main() {
+  const apiServer = await startMockCddApi();
   await buildDriver();
   try {
     await testeCddLogin();
@@ -406,6 +474,7 @@ async function main() {
     await testeCddAboutHelp();
   } finally {
     await driver.quit();
+    if (apiServer) apiServer.close();
   }
 
   console.log("\n─────────────────────────────────");
