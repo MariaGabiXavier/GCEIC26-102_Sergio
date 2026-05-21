@@ -38,8 +38,9 @@ async function main() {
         .forBrowser('chrome')
         .setChromeOptions(opts)
         .build();
-      await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 15000 });
 
+      await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 15000 });
+      console.log(BASE_URL);
       await driver.get(BASE_URL + '/login');
 
       tiraFoto("Pagina Entrada");
