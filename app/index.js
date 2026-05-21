@@ -13,11 +13,12 @@ const API_URL = process.env.API_URL || "http://localhost:3001";
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/cdd", express.static(path.join(__dirname, "views/cdd")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(
   session({
-    secret: "domestic-worker-secret-2025",
+    secret: process.env.SESSION_SECRET || "domestic-worker-secret-2025",
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 3600000 },
@@ -146,7 +147,7 @@ app.post("/exg/exchange", requireExgAuth, async (req, res) => {
     const payload = {
       ...req.body,
       token: "token-simulado-123",
-      value: parseFloat(req.body.value),
+      value: Number.parseFloat(req.body.value),
     };
     const response = await fetch(`${API_URL}/api/exg/exchange`, {
       method: "POST",
@@ -180,7 +181,6 @@ app.get("/exg/help", requireExgAuth, (req, res) => {
 });
 
 // Rota CD - serve o React compilado
-app.use("/cdd", express.static(path.join(__dirname, "views/cdd")));
 app.get("/cdd", (req, res) => {
   res.sendFile(path.join(__dirname, "views/cdd/index.html"));
 });
