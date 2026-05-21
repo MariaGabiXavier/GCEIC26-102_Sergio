@@ -30,7 +30,7 @@ function requireAuth(req, res, next) {
 
 app.get('/', (req, res) => {
   if (req.session.user) return res.redirect('/dashboard');
-  res.render('login', { error: null });
+  res.render('inicial', { error: null });
 });
 
 app.get('/login', (req, res) => {
