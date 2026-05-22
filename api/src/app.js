@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const etec1 = require('./Time_2(ETEC1)/etec1.route');
 const exgRouter = require("./exg/exgApp");
 
 const app = express();
@@ -50,6 +51,7 @@ app.post("/api/calcular", (req, res) => {
   }
 });
 
+app.use('/ETEC1', etec1);
 app.use("/api/exg", exgRouter);
 
 // Rotas CD (compilado TS)

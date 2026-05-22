@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ETEC1 — Ajuda</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+    header { background: #1a1a2e; color: #fff; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 18px; }
+    nav a { color: #aaa; text-decoration: none; margin-left: 20px; font-size: 14px; }
+    nav a:hover { color: #fff; }
+    .container { max-width: 700px; margin: 40px auto; padding: 0 20px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    h2 { color: #1a1a2e; margin-bottom: 16px; font-size: 17px; }
+    .item { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #eee; }
+    .item:last-child { border: none; margin-bottom: 0; }
+    .item h3 { font-size: 15px; color: #333; margin-bottom: 6px; }
+    .item p { font-size: 14px; color: #666; line-height: 1.6; }
+    code { background: #f0f2f5; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚖️ ETEC1 — Encargos Trabalhistas</h1>
+    <nav>
+      <a href="/ETEC1/calculo">Calculadora</a>
+      <a href="/ETEC1/sobre">Sobre</a>
+      <a href="/ETEC1/logout">Sair</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>❓ Como usar a Calculadora</h2>
+
+      <div class="item">
+        <h3>💰 Salário Mensal</h3>
+        <p>Informe o salário bruto. O sistema calcula automaticamente o INSS descontado da empregada, o FGTS (8%), o INSS patronal (8%) e o custo total para o empregador.</p>
+      </div>
+
+      <div class="item">
+        <h3>🏖️ Férias</h3>
+        <p>Informe o salário bruto. O cálculo inclui o valor das férias + 1/3 constitucional, com o INSS correspondente já descontado.</p>
+      </div>
+
+      <div class="item">
+        <h3>📄 Rescisão</h3>
+        <p>Informe o salário, os meses trabalhados e o motivo da demissão:<br>
+          <code>Sem Justa Causa</code> — inclui aviso prévio e multa de 40% do FGTS<br>
+          <code>Justa Causa</code> — sem aviso prévio e sem multa<br>
+          <code>Pedido de Demissão</code> — sem aviso prévio, multa de 20%
+        </p>
+      </div>
+
+      <div class="item">
+        <h3>🎄 13º Salário</h3>
+        <p>Informe o salário bruto e os meses trabalhados no ano (1 a 12). O sistema calcula o valor proporcional bruto e líquido após desconto do INSS.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔗 Endpoints da API</h2>
+      <div class="item">
+        <h3>Base URL: <code>/ETEC1</code></h3>
+        <p><code>POST /ETEC1/salario</code> — <code>{ salario }</code></p>
+        <p><code>POST /ETEC1/ferias</code> — <code>{ salario }</code></p>
+        <p><code>POST /ETEC1/rescisao</code> — <code>{ salario, mesesTrabalhados, motivoDemissao }</code></p>
+        <p><code>POST /ETEC1/decimoterceiro</code> — <code>{ salario, mesesTrabalhados }</code></p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

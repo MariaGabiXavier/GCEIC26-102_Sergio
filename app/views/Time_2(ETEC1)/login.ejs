@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ETEC1 — Login</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .card { background: #fff; border-radius: 12px; padding: 40px; width: 360px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .logo { text-align: center; margin-bottom: 24px; }
+    .logo h1 { color: #1a1a2e; font-size: 22px; }
+    .logo p { color: #666; font-size: 13px; margin-top: 4px; }
+    label { display: block; font-size: 13px; color: #444; margin-bottom: 4px; margin-top: 16px; }
+    input { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+    input:focus { outline: none; border-color: #1a1a2e; }
+    button { width: 100%; margin-top: 24px; padding: 12px; background: #1a1a2e; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+    button:hover { background: #16213e; }
+    .error { color: #e74c3c; font-size: 13px; margin-top: 12px; text-align: center; }
+    .team { text-align: center; margin-top: 20px; font-size: 12px; color: #aaa; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <h1>⚖️ ETEC1</h1>
+      <p>Encargos Trabalhistas — Time_2</p>
+    </div>
+    <form action="/ETEC1/login" method="POST">
+      <label>Usuário</label>
+      <input type="text" name="usuario" placeholder="Digite o usuário" required>
+      <label>Senha</label>
+      <input type="password" name="senha" placeholder="Digite a senha" required>
+      <button type="submit">Entrar</button>
+      <% if (locals.erro) { %>
+        <p class="error"><%= erro %></p>
+      <% } %>
+    </form>
+    <p class="team">Time_2 · GCEIC26 · 2026</p>
+  </div>
+</body>
+</html>
