@@ -2,13 +2,13 @@ const { Builder, By } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const fs = require('fs');
 const path = require('path');
+const {loginETEC1} = require("./loginHelper");
 
 const SCREENSHOTS_DIR = path.join(
     __dirname,
     '..',
     '..',
-    'screenshots',
-    'Time_2(ETEC1)'
+    'screenshots'
 );
 
 if (!fs.existsSync(SCREENSHOTS_DIR)) {
@@ -43,6 +43,8 @@ async function main() {
                 new chrome.Options().addArguments('--headless=new')
             )
             .build();
+
+        await loginETEC1(driver);
 
         await driver.get(
             'http://localhost:3000/ETEC1/sobre'

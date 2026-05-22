@@ -9,8 +9,7 @@ const SCREENSHOTS_DIR = path.join(
     __dirname,
     '..',
     '..',
-    'screenshots',
-    'Time_2(ETEC1)'
+    'screenshots'
 );
 
 if (!fs.existsSync(SCREENSHOTS_DIR)) {
