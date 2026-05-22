@@ -3,6 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const etec1 = require('./Time_2(ETEC1)/etec1.route');
 const exgRouter = require("./exg/exgApp");
+const piscina1 = require('./Time_10_piscina/app_piscina');
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.post("/api/calcular", (req, res) => {
 
 app.use('/ETEC1', etec1);
 app.use("/api/exg", exgRouter);
+app.use("/api/Time_10_piscina", piscina1);
 
 // Rotas CD (compilado TS)
 const cdRouter = require("./cdd/routes/dividendRouter").default;
