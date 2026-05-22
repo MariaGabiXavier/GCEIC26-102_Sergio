@@ -80,18 +80,27 @@ app.post("/calcular", requireAuth, async (req, res) => {
 });
 
 // -- Time_2 ETEC1 --
-app.get('/ETEC1/splash',  (req, res) => res.render('Time_2(ETEC1)/splash'));
-app.get('/ETEC1/login',   (req, res) => res.render('Time_2(ETEC1)/login', { erro: null }));
-app.post('/ETEC1/login',  (req, res) => {
+function requireAuthETEC1(req, res, next) {
+  if (req.session && req.session.user) {return next();}
+  res.redirect('/ETEC1/login');
+}
+
+app.get('/ETEC1/splash', (req, res) => res.render('Time_2(ETEC1)/splash'));
+app.get('/ETEC1/login', (req, res) => res.render('Time_2(ETEC1)/login', { erro: null }));
+app.post('/ETEC1/login', (req, res) => {
   const { usuario, senha } = req.body;
-  if (usuario === 'admin' && senha === '1234') return res.redirect('/ETEC1/calculo');
-  res.render('Time_2(ETEC1)/login', { erro: 'Usuário ou senha inválidos.' });
+  if (usuario === 'admin' && senha === '1234') {
+    req.session.user = { username: usuario };
+    return res.redirect('/ETEC1/calculo');
+  }
+  res.render('Time_2(ETEC1)/login', {erro: 'Usuário ou senha inválidos.'});
 });
-app.get('/ETEC1/calculo', (req, res) => res.render('Time_2(ETEC1)/calculo'));
-app.get('/ETEC1/sobre',   (req, res) => res.render('Time_2(ETEC1)/sobre'));
-app.get('/ETEC1/help',    (req, res) => res.render('Time_2(ETEC1)/help'));
-app.get('/ETEC1/logout',  (req, res) => res.redirect('/ETEC1/login'));
-app.post('/ETEC1/:rota', async (req, res) => {
+app.get('/ETEC1/calculo', requireAuthETEC1, (req, res) => res.render('Time_2(ETEC1)/calculo'));
+app.get('/ETEC1/sobre', requireAuthETEC1, (req, res) => res.render('Time_2(ETEC1)/sobre'));
+app.get('/ETEC1/help', requireAuthETEC1, (req, res) => res.render('Time_2(ETEC1)/help'));
+app.get('/ETEC1/logout', (req, res) => { req.session.destroy(() => {res.redirect('/ETEC1/login');});
+});
+app.post('/ETEC1/:rota', requireAuthETEC1, async (req, res) => {
   try {
     const fetch = (await import('node-fetch')).default;
     const response = await fetch(`${API_URL}/ETEC1/${req.params.rota}`, {
@@ -102,7 +111,7 @@ app.post('/ETEC1/:rota', async (req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    res.status(400).json({ success: false, error: err.message });
+    res.status(400).json({success: false, error: err.message});
   }
 });
 
