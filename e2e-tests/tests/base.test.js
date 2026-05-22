@@ -1,70 +1,75 @@
-const { Builder, By, until, Key } = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-const fs = require('fs');
-const path = require('path');
+const { Builder, By, until, Key } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
+const fs = require("fs");
+const path = require("path");
+const runExgTests = require("./exg/exg-all-screens.test.js");
+const runCddTests = require("./cdd/cdd-all-screens.test.js");
 
-const BASE_URL = process.env.APP_URL || 'http://localhost:3000';
-const SCREENSHOTS_DIR = path.join(__dirname, '..', 'screenshots');
+const BASE_URL = process.env.APP_URL || "http://localhost:3000";
+const SCREENSHOTS_DIR = path.join(__dirname, "..", "screenshots");
 
 // Garante que o diretório de screenshots existe
-if (!fs.existsSync(SCREENSHOTS_DIR)) fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
+if (!fs.existsSync(SCREENSHOTS_DIR))
+  fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
 
-async function tiraFoto(name){
-
-      try{
-        const img = await driver.takeScreenshot();
-        const filePath = path.join(SCREENSHOTS_DIR, `${name}.png`);
-        fs.writeFileSync(filePath, img, 'base64');
-        console.log(`Foto tirada ${name}.png`);
-      }catch(e){
-        console.warn('Erro ao tirar a foto');
-      }
-
+async function tiraFoto(name) {
+  try {
+    const img = await driver.takeScreenshot();
+    const filePath = path.join(SCREENSHOTS_DIR, `${name}.png`);
+    fs.writeFileSync(filePath, img, "base64");
+    console.log(`Foto tirada ${name}.png`);
+  } catch (e) {
+    console.warn("Erro ao tirar a foto");
+  }
 }
 
 async function main() {
+  try {
+    const opts = new chrome.Options();
+    opts.addArguments(
+      "--headless=new",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--window-size=800,640",
+      "--disable-gpu",
+    );
+    driver = await new Builder()
+      .forBrowser("chrome")
+      .setChromeOptions(opts)
+      .build();
 
-    try{
-      const opts = new chrome.Options();
-      opts.addArguments(
-      '--headless=new',
-      '--no-sandbox',
-      '--disable-dev-shm-usage',
-      '--window-size=800,640',
-      '--disable-gpu'
-      );
-      driver = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(opts)
-        .build();
-      await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 15000 });
+    await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 15000 });
+    console.log(BASE_URL);
+    await driver.get(BASE_URL + "/login");
 
-      await driver.get(BASE_URL + '/login');
+    tiraFoto("Pagina Entrada");
+    //preenche os campos
 
-      tiraFoto("Pagina Entrada");
-      //preenche os campos 
+    await driver.findElement(By.id("username")).sendKeys("Adm");
+    await driver.findElement(By.id("password")).sendKeys("admin");
 
-      await driver.findElement(By.id('username')).sendKeys('Adm');
-      await driver.findElement(By.id('password')).sendKeys('admin');
+    tiraFoto("Valores Digitados");
+    // vamos acionar o botao de login e ver o que acontece
+    await driver.findElement(By.id("loginForm")).submit();
+    await new Promise((r) => setTimeout(r, 800));
 
-      tiraFoto("Valores Digitados");
-      // vamos acionar o botao de login e ver o que acontece
-      await driver.findElement(By.id('loginForm')).submit();
-      await new Promise(r => setTimeout(r, 800)); 
+    tiraFoto("Submit form com erro");
 
-      tiraFoto("Submit form com erro");
+    const errMsg = await driver.findElement(By.css(".erro")).getText();
+    if (!errMsg.includes("inválidos") && !errMsg.includes("invalidos"))
+      throw new Error(`Falhou : ${errMsg}`);
 
-      const errMsg = await driver.findElement(By.css('.erro')).getText();
-      if (!errMsg.includes('inválidos')) throw new Error(`Falhou : ${errMsg}`);
+    console.log("\n--- Iniciando testes do EXG ---");
+    await runExgTests();
 
-
-    } finally {
-        if (driver) await driver.quit();
-    }
-
+    console.log("\n--- Iniciando testes do CDD ---");
+    await runCddTests();
+  } finally {
+    if (driver) await driver.quit();
+  }
 }
 
-main().catch( err => { 
-    console.error('Erro fatal', err);
-    process.exit(1);
+main().catch((err) => {
+  console.error("Erro fatal", err);
+  process.exit(1);
 });

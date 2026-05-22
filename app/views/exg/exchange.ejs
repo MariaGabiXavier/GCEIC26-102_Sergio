@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXG — Simulador de Câmbio</title>
+  <link rel="stylesheet" href="/exg.css">
+</head>
+<body>
+  <div class="layout">
+    <%- include('nav') %>
+    <main class="page-content">
+      <h1 class="page-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21-4-4 4-4"/><path d="M20 17H4"/></svg>
+        Simulador de Câmbio
+      </h1>
+
+      <div class="exchange-layout">
+        <!-- Formulário -->
+        <div class="card exchange-form">
+          <h2 style="font-size:16px;font-weight:700;margin-bottom:4px">Parâmetros da Conversão</h2>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">
+            Todos os valores incluem IOF, spread e taxa de serviço.
+          </p>
+
+          <div id="erroBox" class="erro" style="display:none"></div>
+
+          <form id="exchangeForm" style="display:flex;flex-direction:column;gap:16px">
+            <div class="field">
+              <label for="currency">Moeda de Destino</label>
+              <select id="currency" name="currencyCode">
+                <% if (currencies && currencies.length > 0) { %>
+                  <% for (var i = 0; i < currencies.length; i++) { var c = currencies[i]; %>
+                    <option value="<%= c.codigo %>" <%= preselected === c.codigo ? 'selected' : '' %>>
+                      <%= c.codigo %> — <%= c.nome %>
+                    </option>
+                  <% } %>
+                <% } %>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="value">Valor em R$ (BRL)</label>
+              <input id="value" type="number" placeholder="Ex: 1000" min="0.01" step="0.01">
+            </div>
+
+            <div class="field">
+              <label>Tipo de Operação</label>
+              <div style="display:flex;gap:10px">
+                <label id="labelComercial" onclick="selectType('comercial')" style="flex:1;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--radius);border:1.5px solid var(--accent);background:#FFEBEE;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.15s">
+                  <input type="radio" name="type" value="comercial" checked style="display:none">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="iconComercial"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 0-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+                  Comercial
+                  <span style="margin-left:auto;font-size:11px;color:var(--text-secondary);font-weight:400">IOF 0,38%</span>
+                </label>
+                <label id="labelTurism" onclick="selectType('turism')" style="flex:1;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;font-weight:600;font-size:14px;transition:all 0.15s">
+                  <input type="radio" name="type" value="turism" style="display:none">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="iconTurism"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                  Turismo
+                  <span style="margin-left:auto;font-size:11px;color:var(--text-secondary);font-weight:400">IOF 6,38%</span>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit" id="submitBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21-4-4 4-4"/><path d="M20 17H4"/></svg>
+              Calcular Conversão
+            </button>
+          </form>
+        </div>
+
+        <!-- Resultado vazio (padrão) -->
+        <div class="result-empty" id="resultEmpty">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 12px;display:block"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          <div style="font-weight:700;margin-bottom:6px">Resultado aparecerá aqui</div>
+          <div class="result-empty-text">Preencha os campos ao lado e clique em <strong>Calcular Conversão</strong>.</div>
+        </div>
+
+        <!-- Resultado preenchido (oculto inicialmente) -->
+        <div class="result-card" id="resultCard" style="display:none">
+          <div class="result-header">
+            <div id="resultBadge" style="width:44px;height:44px;border-radius:50%;background:#1a1a1a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;letter-spacing:1px;flex-shrink:0"></div>
+            <div>
+              <div class="result-title" id="resultTitle"></div>
+              <div class="result-subtitle">
+                <span id="resultTipo"></span>
+                ·
+                <span class="badge badge-red" style="font-size:11px" id="resultIofBadge"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-section">
+            <div class="result-section-title">Entrada</div>
+            <div class="result-row">
+              <span>Valor em BRL</span>
+              <span id="resultEntrada"></span>
+            </div>
+          </div>
+
+          <div class="result-section">
+            <div class="result-section-title">Descontos</div>
+            <div class="result-row negative"><span id="resultIofLabel"></span><span id="resultIof"></span></div>
+            <div class="result-row negative"><span>Taxa de Serviço (2%)</span><span id="resultTaxa"></span></div>
+            <div class="result-row negative"><span>Spread</span><span id="resultSpread"></span></div>
+            <div class="result-row total negative"><span>Total Descontado</span><span id="resultTotal"></span></div>
+          </div>
+
+          <div class="result-section">
+            <div class="result-section-title">Cotação</div>
+            <div class="result-row"><span>Base</span><span id="resultBase"></span></div>
+            <div class="result-row"><span>Com spread</span><span id="resultComSpread"></span></div>
+            <div class="result-row"><span>BRL efetivo</span><span id="resultEfetivo"></span></div>
+          </div>
+
+          <div class="result-final">
+            <div class="result-final-label">Você recebe</div>
+            <div class="result-final-value" id="resultFinalValue"></div>
+            <div class="result-final-currency" id="resultFinalCurrency"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    var COLORS = { USD: '#2E7D32', EUR: '#1565C0', GBP: '#6A1B9A', JPY: '#C62828', ARS: '#0277BD' };
+
+    function brl(n) {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+    }
+    function fmtNum(n, d) {
+      d = d === undefined ? 4 : d;
+      return new Intl.NumberFormat('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
+    }
+
+    function selectType(t) {
+      document.querySelector('input[name="type"][value="' + t + '"]').checked = true;
+      var lc = document.getElementById('labelComercial');
+      var lt = document.getElementById('labelTurism');
+      var ic = document.getElementById('iconComercial');
+      var it = document.getElementById('iconTurism');
+      if (t === 'comercial') {
+        lc.style.border = '1.5px solid var(--accent)';
+        lc.style.background = '#FFEBEE';
+        ic.setAttribute('stroke', 'var(--accent)');
+        lt.style.border = '1.5px solid var(--border)';
+        lt.style.background = 'var(--bg)';
+        it.setAttribute('stroke', 'var(--text-secondary)');
+      } else {
+        lt.style.border = '1.5px solid var(--accent)';
+        lt.style.background = '#FFEBEE';
+        it.setAttribute('stroke', 'var(--accent)');
+        lc.style.border = '1.5px solid var(--border)';
+        lc.style.background = 'var(--bg)';
+        ic.setAttribute('stroke', 'var(--text-secondary)');
+      }
+    }
+
+    document.getElementById('exchangeForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var erroBox  = document.getElementById('erroBox');
+      var submitBtn = document.getElementById('submitBtn');
+      var currencyCode = document.getElementById('currency').value;
+      var value = parseFloat(document.getElementById('value').value.replace(',', '.'));
+      var type = document.querySelector('input[name="type"]:checked').value;
+
+      erroBox.style.display = 'none';
+
+      if (!currencyCode || isNaN(value) || value <= 0) {
+        erroBox.textContent = 'Informe um valor em BRL válido e positivo.';
+        erroBox.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner" style="width:18px;height:18px;border-width:2px"></span> Calculando…';
+
+      try {
+        var res = await fetch('/exg/exchange', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ currencyCode: currencyCode, value: value, type: type })
+        });
+        var data = await res.json();
+
+        if (!res.ok) {
+          erroBox.textContent = data.erro || 'Erro ao converter';
+          erroBox.style.display = 'block';
+          return;
+        }
+
+        var badge = document.getElementById('resultBadge');
+        badge.style.background = COLORS[data.moeda.codigo] || '#1a1a1a';
+        badge.textContent = data.moeda.codigo;
+
+        document.getElementById('resultTitle').textContent = data.moeda.nome;
+        document.getElementById('resultTipo').textContent  = data.tipo === 'comercial' ? '🏢 Comercial' : '✈ Turismo';
+        document.getElementById('resultIofBadge').textContent = 'IOF ' + data.descontos.iof_aliquota;
+
+        document.getElementById('resultEntrada').textContent = brl(data.entrada_brl);
+        document.getElementById('resultIofLabel').textContent = 'IOF (' + data.descontos.iof_aliquota + ')';
+        document.getElementById('resultIof').textContent = '− ' + brl(data.descontos.iof);
+        document.getElementById('resultTaxa').textContent = '− ' + brl(data.descontos.taxa_servico);
+        document.getElementById('resultSpread').textContent = '− ' + brl(data.descontos.spread);
+        document.getElementById('resultTotal').textContent = '− ' + brl(data.descontos.total);
+
+        document.getElementById('resultBase').textContent = 'R$ ' + fmtNum(data.cotacao.base);
+        document.getElementById('resultComSpread').textContent = 'R$ ' + fmtNum(data.cotacao.com_spread);
+        document.getElementById('resultEfetivo').textContent = brl(data.valor_efetivo_brl);
+
+        document.getElementById('resultFinalValue').textContent = fmtNum(data.valor_convertido, 4);
+        document.getElementById('resultFinalCurrency').textContent = data.moeda.codigo + ' — ' + data.moeda.nome;
+
+        document.getElementById('resultEmpty').style.display = 'none';
+        document.getElementById('resultCard').style.display  = 'block';
+
+      } catch (err) {
+        erroBox.textContent = 'Erro ao comunicar com o servidor.';
+        erroBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21-4-4 4-4"/><path d="M20 17H4"/></svg> Calcular Conversão';
+      }
+    });
+  </script>
+</body>
+</html>
