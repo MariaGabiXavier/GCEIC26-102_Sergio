@@ -305,40 +305,27 @@
   <div class="background-circle circle-3"></div>
 
   <nav class="navbar">
-    <div class="user-info">
-      <% if (user) { %>
-        Olá, <strong><%= user.nome %></strong>
-      <% } else { %>
-        Calculadora Markup
-      <% } %>
-    </div>
-
     <ul class="nav-links">
-
-      <li><a href="/splash">Início</a></li>
-
-      <% if (user) { %>
+      <li><a href="/sobre">Sobre</a></li>
+      <li><a href="/help">Help</a></li>
       <li class="dropdown">
-        <span class="nav-link">Cálculos ▾</span>
-
+        <a class="nav-link">Calcular ▾</a>
         <div class="dropdown-content">
-          <a href="/preco-venda">Preço de Venda</a>
-          <a href="/desconto">Desconto</a>
-          <a href="/markup-multiplicador">Markup Multiplicador</a>
+          <a href="/preco-venda">Calcular Preço de Venda</a>
+          <a href="/desconto">Calcular Desconto</a>
+          <a href="/markup-multiplicador">Calcular Markup Multiplicador</a>
         </div>
       </li>
-      <% } %>
-
-      <li><a href="/sobre">Sobre</a></li>
-      <li><a href="/help">Ajuda</a></li>
-
-      <% if (user) { %>
-        <li><a class="logout-link" href="/logout">Sair</a></li>
-      <% } else { %>
-        <li><a href="/login">Login</a></li>
-      <% } %>
-
     </ul>
+    <div class="user-info">
+     <% if (user) { %>
+    Olá, <strong><%= user.nome %></strong>
+  <% }; %>
+</div>
+<% if (user) { %>
+<a href="/logout" class="logout-link">Sair</a>
+<% }; %>
+    <a href="/logout" class="logout-link">Sair</a>
   </nav>
 
   <div class="help-container">
