@@ -25,124 +25,121 @@ app.use(
   }),
 );
 
-// Auth middleware
-function requireAuth(req, res, next) {
-  if (req.session && req.session.user) return next();
-  res.redirect("/login");
+// ============================================================
+// Markup — Rotas
+// ============================================================
+
+function requireMarkupAuth(req, res, next) {
+  if (req.session && req.session.markupUser) return next();
+  res.redirect("/markup/login");
 }
 
-//rota splash screen
-app.get('/', (req, res) => {
-  res.render('splash', { error: null,
-    user: req.session.user || null });
-});
-app.get('/splash', (req, res) => {
-  res.render('splash', { error: null,
-    user: req.session.user || null} );
+app.get("/markup", (req, res) => {
+  res.render("markup/splash", { user: req.session.markupUser || null });
 });
 
-//rota sobre
-app.get('/sobre', (req, res) => {
-  res.render('sobre', { error: null,
-    user: req.session.user || null});
-});
-//rota sobre
-app.get('/help', (req, res) => {
-  res.render('help', { error: null,
-    user: req.session.user || null});
-});
-app.get('/login', (req, res) => {
-  if (req.session.user) return res.redirect('/');
-  res.render('login', { error: null });
+app.get("/markup/login", (req, res) => {
+  if (req.session.markupUser) return res.redirect("/markup/dashboard");
+  res.render("markup/login", { error: null, user: null });
 });
 
-app.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.redirect("/login");
-});
-
-app.post("/login", (req, res) => {
+app.post("/markup/login", (req, res) => {
   const { username, password } = req.body;
-  if (username === 'admin' && password === 'admin') {
-    req.session.user = { username: 'admin', nome: 'Administrador' };
-    return res.redirect('/');
+  if (!username || !password)
+    return res.render("markup/login", { error: "Preencha todos os campos", user: null });
+  if (username === "admin" && password === "admin") {
+    req.session.markupUser = { username: "admin", nome: "Administrador" };
+    return res.redirect("/markup/dashboard");
   }
-  res.render("login", { error: "Usuário ou senha inválidos" });
+  res.render("markup/login", { error: "Usuário ou senha inválidos", user: null });
 });
 
-// Dashboard (default: preço de venda)
-app.get('/calculo', requireAuth, (req, res) => {
-  res.render('calculo', { user: req.session.user, tipo: 'preco-venda' });
+app.get("/markup/logout", (req, res) => {
+  req.session.markupUser = null;
+  res.redirect("/markup/login");
 });
 
-// Rotas para cada tipo de cálculo
-app.get('/preco-venda', requireAuth, (req, res) => {
-  res.render('calculo', { user: req.session.user, tipo: 'preco-venda' });
+app.get("/markup/dashboard", requireMarkupAuth, (req, res) => {
+  res.render("markup/calculo", { user: req.session.markupUser, tipo: "preco-venda" });
 });
 
-app.get('/margem-lucro', requireAuth, (req, res) => {
-  res.render('margemLucro', { user: req.session.user, tipo: 'margem-lucro' });
+app.get("/markup/preco-venda", requireMarkupAuth, (req, res) => {
+  res.render("markup/calculo", { user: req.session.markupUser, tipo: "preco-venda" });
 });
 
-app.get('/desconto', requireAuth, (req, res) => {
-  res.render('desconto', { user: req.session.user, tipo: 'desconto' });
+app.get("/markup/margem-lucro", requireMarkupAuth, (req, res) => {
+  res.render("markup/margemLucro", { user: req.session.markupUser, tipo: "margem-lucro" });
 });
 
-app.get('/markup-multiplicador', requireAuth, (req, res) => {
-  res.render('calcularMarkupMultiplicador', { user: req.session.user, tipo: 'markup-multiplicador' });
+app.get("/markup/desconto", requireMarkupAuth, (req, res) => {
+  res.render("markup/desconto", { user: req.session.markupUser, tipo: "desconto" });
 });
 
-// Proxy para API /api/calcularPrecoVenda
-app.post('/calcularPrecoVenda', requireAuth, async (req, res) => {
+app.get("/markup/markup-multiplicador", requireMarkupAuth, (req, res) => {
+  res.render("markup/calcularMarkupMultiplicador", { user: req.session.markupUser, tipo: "markup-multiplicador" });
+});
+
+app.get("/markup/sobre", requireMarkupAuth, (req, res) => {
+  res.render("markup/sobre", { user: req.session.markupUser });
+});
+
+app.get("/markup/help", requireMarkupAuth, (req, res) => {
+  res.render("markup/help", { user: req.session.markupUser });
+});
+
+// Proxy para API /api/markup/calcularPrecoVenda
+app.post("/markup/calcularPrecoVenda", requireMarkupAuth, async (req, res) => {
   try {
-    const fetch = (await import('node-fetch')).default;
-    const response = await fetch(`${API_URL}/api/calcularPrecoVenda`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const fetch = (await import("node-fetch")).default;
+    const response = await fetch(`${API_URL}/api/markup/calcularPrecoVenda`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body),
     });
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    console.log(err.message)
-    res.status(400).json({ success: false, error: err.message});  
+    console.log(err.message);
+    res.status(400).json({ success: false, error: err.message });
   }
 });
 
-// Proxy para API /api/calcularDesconto
-app.post('/calcularDesconto', requireAuth, async (req, res) => {
+// Proxy para API /api/markup/calcularDesconto
+app.post("/markup/calcularDesconto", requireMarkupAuth, async (req, res) => {
   try {
-    const fetch = (await import('node-fetch')).default;
-    const response = await fetch(`${API_URL}/api/calcularDesconto`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const fetch = (await import("node-fetch")).default;
+    const response = await fetch(`${API_URL}/api/markup/calcularDesconto`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body),
     });
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    console.log(err.message)
-    res.status(400).json({ success: false, error: err.message});  
+    console.log(err.message);
+    res.status(400).json({ success: false, error: err.message });
   }
 });
 
-// Proxy para API /api/calcularMarkupMultiplicador
-app.post('/calcularMarkupMultiplicador', requireAuth, async (req, res) => {
+// Proxy para API /api/markup/calcularMarkupMultiplicador
+app.post("/markup/calcularMarkupMultiplicador", requireMarkupAuth, async (req, res) => {
   try {
-    const fetch = (await import('node-fetch')).default;
-    const response = await fetch(`${API_URL}/api/calcularMarkupMultiplicador`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const fetch = (await import("node-fetch")).default;
+    const response = await fetch(`${API_URL}/api/markup/calcularMarkupMultiplicador`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body),
     });
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    res.status(400).json({success: false, error: err.message});
+    res.status(400).json({ success: false, error: err.message });
   }
 });
 
-// Rotas EXG (equipe)
+// ============================================================
+// EXG — Rotas
+// ============================================================
 
 function requireExgAuth(req, res, next) {
   if (req.session && req.session.exgUser) return next();

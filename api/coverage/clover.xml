@@ -1,82 +1,371 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1779648443174" clover="3.2.0">
-  <project timestamp="1779648443174" name="All files">
-    <metrics statements="70" coveredstatements="33" conditionals="41" coveredconditionals="24" methods="7" coveredmethods="4" elements="118" coveredelements="61" complexity="0" loc="70" ncloc="70" packages="1" files="2" classes="2"/>
-    <file name="app.js" path="C:\Users\ester\GCEIC26-102\api\src\app.js">
-      <metrics statements="50" coveredstatements="13" conditionals="15" coveredconditionals="0" methods="4" coveredmethods="1"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="5" count="1" type="stmt"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="8" count="1" type="stmt"/>
-      <line num="9" count="1" type="stmt"/>
-      <line num="13" count="1" type="stmt"/>
-      <line num="14" count="1" type="stmt"/>
-      <line num="19" count="1" type="stmt"/>
-      <line num="20" count="0" type="stmt"/>
-      <line num="21" count="0" type="stmt"/>
-      <line num="22" count="0" type="stmt"/>
-      <line num="23" count="0" type="stmt"/>
-      <line num="24" count="0" type="stmt"/>
-      <line num="26" count="0" type="cond" truecount="0" falsecount="4"/>
-      <line num="27" count="0" type="stmt"/>
-      <line num="30" count="0" type="stmt"/>
-      <line num="31" count="0" type="stmt"/>
-      <line num="32" count="0" type="stmt"/>
-      <line num="34" count="0" type="stmt"/>
-      <line num="35" count="0" type="stmt"/>
-      <line num="40" count="1" type="stmt"/>
-      <line num="41" count="0" type="stmt"/>
-      <line num="42" count="0" type="stmt"/>
-      <line num="43" count="0" type="stmt"/>
-      <line num="44" count="0" type="stmt"/>
-      <line num="45" count="0" type="stmt"/>
-      <line num="46" count="0" type="cond" truecount="0" falsecount="4"/>
-      <line num="47" count="0" type="stmt"/>
-      <line num="49" count="0" type="cond" truecount="0" falsecount="3"/>
-      <line num="50" count="0" type="stmt"/>
-      <line num="51" count="0" type="stmt"/>
-      <line num="52" count="0" type="stmt"/>
-      <line num="54" count="0" type="stmt"/>
-      <line num="55" count="0" type="stmt"/>
-      <line num="60" count="1" type="stmt"/>
-      <line num="61" count="0" type="stmt"/>
-      <line num="62" count="0" type="stmt"/>
-      <line num="63" count="0" type="stmt"/>
-      <line num="64" count="0" type="stmt"/>
-      <line num="65" count="0" type="stmt"/>
-      <line num="66" count="0" type="cond" truecount="0" falsecount="4"/>
-      <line num="67" count="0" type="stmt"/>
-      <line num="69" count="0" type="stmt"/>
-      <line num="70" count="0" type="stmt"/>
-      <line num="71" count="0" type="stmt"/>
-      <line num="73" count="0" type="stmt"/>
-      <line num="74" count="0" type="stmt"/>
-      <line num="78" count="1" type="stmt"/>
-    </file>
-    <file name="funcoes.js" path="C:\Users\ester\GCEIC26-102\api\src\funcoes.js">
-      <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="24" methods="3" coveredmethods="3"/>
-      <line num="11" count="13" type="cond" truecount="2" falsecount="0"/>
-      <line num="12" count="11" type="cond" truecount="2" falsecount="0"/>
-      <line num="13" count="9" type="cond" truecount="2" falsecount="0"/>
-      <line num="14" count="7" type="stmt"/>
-      <line num="18" count="13" type="stmt"/>
-      <line num="19" count="13" type="cond" truecount="4" falsecount="0"/>
-      <line num="20" count="13" type="cond" truecount="2" falsecount="0"/>
-      <line num="21" count="10" type="cond" truecount="2" falsecount="0"/>
-      <line num="22" count="7" type="cond" truecount="2" falsecount="0"/>
-      <line num="23" count="5" type="cond" truecount="2" falsecount="0"/>
-      <line num="24" count="3" type="stmt"/>
-      <line num="25" count="3" type="stmt"/>
-      <line num="26" count="3" type="stmt"/>
-      <line num="31" count="9" type="cond" truecount="0" falsecount="2"/>
-      <line num="32" count="9" type="cond" truecount="2" falsecount="0"/>
-      <line num="33" count="7" type="cond" truecount="4" falsecount="0"/>
-      <line num="34" count="5" type="stmt"/>
-      <line num="35" count="5" type="stmt"/>
-      <line num="36" count="5" type="stmt"/>
-      <line num="39" count="1" type="stmt"/>
-    </file>
+<coverage generated="1779660570981" clover="3.2.0">
+  <project timestamp="1779660570982" name="All files">
+    <metrics statements="308" coveredstatements="290" conditionals="191" coveredconditionals="175" methods="43" coveredmethods="41" elements="542" coveredelements="506" complexity="0" loc="308" ncloc="308" packages="6" files="13" classes="13"/>
+    <package name="src">
+      <metrics statements="53" coveredstatements="40" conditionals="30" coveredconditionals="24" methods="6" coveredmethods="4"/>
+      <file name="app.js" path="C:\Users\ester\GCEIC26-102\api\src\app.js">
+        <metrics statements="33" coveredstatements="20" conditionals="4" coveredconditionals="0" methods="3" coveredmethods="1"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="36" count="4" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="42" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="56" count="4" type="stmt"/>
+        <line num="59" count="4" type="stmt"/>
+        <line num="62" count="4" type="stmt"/>
+        <line num="65" count="4" type="stmt"/>
+        <line num="66" count="4" type="stmt"/>
+        <line num="68" count="4" type="stmt"/>
+      </file>
+      <file name="funcoes.js" path="C:\Users\ester\GCEIC26-102\api\src\funcoes.js">
+        <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="24" methods="3" coveredmethods="3"/>
+        <line num="11" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="7" type="stmt"/>
+        <line num="18" count="13" type="stmt"/>
+        <line num="19" count="13" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="31" count="9" type="cond" truecount="0" falsecount="2"/>
+        <line num="32" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="34" count="5" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
+        <line num="36" count="5" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.Time_2(ETEC1)">
+      <metrics statements="70" coveredstatements="69" conditionals="40" coveredconditionals="40" methods="10" coveredmethods="10"/>
+      <file name="etec1.function.js" path="C:\Users\ester\GCEIC26-102\api\src\Time_2(ETEC1)\etec1.function.js">
+        <metrics statements="37" coveredstatements="36" conditionals="8" coveredconditionals="8" methods="5" coveredmethods="5"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="15" count="6" type="stmt"/>
+        <line num="16" count="6" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="19" count="6" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="5" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="29" count="5" type="stmt"/>
+        <line num="31" count="5" type="stmt"/>
+        <line num="36" count="8" type="stmt"/>
+        <line num="37" count="8" type="stmt"/>
+        <line num="39" count="8" type="stmt"/>
+        <line num="40" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="8" type="stmt"/>
+        <line num="46" count="8" type="stmt"/>
+        <line num="49" count="8" type="stmt"/>
+        <line num="50" count="8" type="stmt"/>
+        <line num="53" count="8" type="stmt"/>
+        <line num="54" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="8" type="stmt"/>
+        <line num="60" count="8" type="stmt"/>
+        <line num="75" count="6" type="stmt"/>
+        <line num="76" count="6" type="stmt"/>
+        <line num="77" count="6" type="stmt"/>
+        <line num="78" count="6" type="stmt"/>
+        <line num="79" count="6" type="stmt"/>
+        <line num="83" count="20" type="stmt"/>
+        <line num="84" count="41" type="cond" truecount="2" falsecount="0"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="90" count="5" type="stmt"/>
+        <line num="92" count="5" type="stmt"/>
+      </file>
+      <file name="etec1.route.js" path="C:\Users\ester\GCEIC26-102\api\src\Time_2(ETEC1)\etec1.route.js">
+        <metrics statements="33" coveredstatements="33" conditionals="32" coveredconditionals="32" methods="5" coveredmethods="5"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
+        <line num="22" count="6" type="stmt"/>
+        <line num="23" count="6" type="cond" truecount="5" falsecount="0"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="31" count="4" type="stmt"/>
+        <line num="32" count="4" type="cond" truecount="5" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="3" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
+        <line num="40" count="7" type="stmt"/>
+        <line num="41" count="7" type="stmt"/>
+        <line num="42" count="7" type="cond" truecount="5" falsecount="0"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="44" count="6" type="cond" truecount="5" falsecount="0"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="46" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="49" count="4" type="stmt"/>
+        <line num="54" count="4" type="stmt"/>
+        <line num="55" count="5" type="stmt"/>
+        <line num="56" count="5" type="cond" truecount="5" falsecount="0"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="58" count="4" type="cond" truecount="5" falsecount="0"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="64" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.exg">
+      <metrics statements="65" coveredstatements="64" conditionals="43" coveredconditionals="43" methods="12" coveredmethods="12"/>
+      <file name="exgApp.js" path="C:\Users\ester\GCEIC26-102\api\src\exg\exgApp.js">
+        <metrics statements="37" coveredstatements="36" conditionals="25" coveredconditionals="25" methods="4" coveredmethods="4"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="11" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="6" type="cond" truecount="4" falsecount="0"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="29" count="13" type="stmt"/>
+        <line num="31" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="11" type="cond" truecount="5" falsecount="0"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="38" count="8" type="stmt"/>
+        <line num="39" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="42" count="7" type="stmt"/>
+        <line num="43" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="46" count="6" type="stmt"/>
+        <line num="47" count="6" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="53" count="4" type="stmt"/>
+      </file>
+      <file name="exgFuncoes.js" path="C:\Users\ester\GCEIC26-102\api\src\exg\exgFuncoes.js">
+        <metrics statements="28" coveredstatements="28" conditionals="18" coveredconditionals="18" methods="8" coveredmethods="8"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="9" count="5" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="13" count="42" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="50" type="stmt"/>
+        <line num="26" count="42" type="stmt"/>
+        <line num="30" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="39" type="stmt"/>
+        <line num="32" count="39" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="37" type="stmt"/>
+        <line num="37" count="36" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="35" type="stmt"/>
+        <line num="42" count="38" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="37" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="36" type="stmt"/>
+        <line num="48" count="33" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="31" type="stmt"/>
+        <line num="50" count="31" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="30" type="cond" truecount="2" falsecount="0"/>
+        <line num="53" count="29" type="stmt"/>
+        <line num="54" count="29" type="stmt"/>
+        <line num="55" count="29" type="stmt"/>
+        <line num="56" count="29" type="stmt"/>
+        <line num="57" count="29" type="stmt"/>
+        <line num="58" count="29" type="stmt"/>
+        <line num="59" count="29" type="stmt"/>
+        <line num="61" count="29" type="stmt"/>
+        <line num="81" count="5" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.markup">
+      <metrics statements="47" coveredstatements="44" conditionals="45" coveredconditionals="37" methods="7" coveredmethods="7"/>
+      <file name="markup.app.js" path="C:\Users\ester\GCEIC26-102\api\src\markup\markup.app.js">
+        <metrics statements="27" coveredstatements="24" conditionals="19" coveredconditionals="13" methods="4" coveredmethods="4"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="21" count="4" type="cond" truecount="3" falsecount="1"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="4" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="31" count="4" type="stmt"/>
+        <line num="32" count="5" type="cond" truecount="0" falsecount="3"/>
+        <line num="33" count="5" type="cond" truecount="5" falsecount="0"/>
+        <line num="34" count="4" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="43" count="4" type="stmt"/>
+        <line num="44" count="6" type="cond" truecount="0" falsecount="2"/>
+        <line num="45" count="6" type="cond" truecount="5" falsecount="0"/>
+        <line num="46" count="3" type="stmt"/>
+        <line num="47" count="3" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="54" count="4" type="stmt"/>
+      </file>
+      <file name="markup.funcoes.js" path="C:\Users\ester\GCEIC26-102\api\src\markup\markup.funcoes.js">
+        <metrics statements="20" coveredstatements="20" conditionals="26" coveredconditionals="24" methods="3" coveredmethods="3"/>
+        <line num="10" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="17" count="17" type="stmt"/>
+        <line num="18" count="17" type="cond" truecount="4" falsecount="0"/>
+        <line num="19" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="4" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="30" count="12" type="cond" truecount="0" falsecount="2"/>
+        <line num="31" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="32" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="33" count="8" type="stmt"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="35" count="8" type="stmt"/>
+        <line num="38" count="5" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.src.controllers">
+      <metrics statements="62" coveredstatements="62" conditionals="33" coveredconditionals="31" methods="8" coveredmethods="8"/>
+      <file name="dividendYield.ts" path="C:\Users\ester\GCEIC26-102\api\src\src\controllers\dividendYield.ts">
+        <metrics statements="13" coveredstatements="13" conditionals="12" coveredconditionals="11" methods="2" coveredmethods="2"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="19" count="17" type="stmt"/>
+        <line num="21" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="11" type="stmt"/>
+        <line num="27" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="11" type="stmt"/>
+        <line num="39" count="5" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="41" count="4" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="44" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="3" type="stmt"/>
+      </file>
+      <file name="drip.ts" path="C:\Users\ester\GCEIC26-102\api\src\src\controllers\drip.ts">
+        <metrics statements="28" coveredstatements="28" conditionals="3" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <line num="29" count="5" type="stmt"/>
+        <line num="32" count="18" type="cond" truecount="1" falsecount="0"/>
+        <line num="34" count="17" type="stmt"/>
+        <line num="35" count="17" type="stmt"/>
+        <line num="36" count="17" type="stmt"/>
+        <line num="37" count="17" type="stmt"/>
+        <line num="38" count="17" type="stmt"/>
+        <line num="39" count="17" type="stmt"/>
+        <line num="41" count="17" type="stmt"/>
+        <line num="42" count="26" type="stmt"/>
+        <line num="43" count="26" type="stmt"/>
+        <line num="44" count="26" type="stmt"/>
+        <line num="45" count="128" type="stmt"/>
+        <line num="46" count="128" type="stmt"/>
+        <line num="47" count="128" type="stmt"/>
+        <line num="48" count="128" type="stmt"/>
+        <line num="49" count="128" type="stmt"/>
+        <line num="51" count="26" type="stmt"/>
+        <line num="52" count="26" type="stmt"/>
+        <line num="53" count="26" type="stmt"/>
+        <line num="54" count="26" type="stmt"/>
+        <line num="62" count="17" type="stmt"/>
+        <line num="76" count="5" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="78" count="2" type="stmt"/>
+        <line num="79" count="2" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+      </file>
+      <file name="login.ts" path="C:\Users\ester\GCEIC26-102\api\src\src\controllers\login.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="10" coveredconditionals="10" methods="2" coveredmethods="2"/>
+        <line num="9" count="13" type="stmt"/>
+        <line num="17" count="5" type="stmt"/>
+        <line num="19" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="7" type="stmt"/>
+        <line num="23" count="6" type="cond" truecount="4" falsecount="0"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
+      </file>
+      <file name="payoutRatio.ts" path="C:\Users\ester\GCEIC26-102\api\src\src\controllers\payoutRatio.ts">
+        <metrics statements="14" coveredstatements="14" conditionals="8" coveredconditionals="7" methods="2" coveredmethods="2"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="24" count="16" type="stmt"/>
+        <line num="26" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="11" type="stmt"/>
+        <line num="29" count="11" type="stmt"/>
+        <line num="30" count="11" type="stmt"/>
+        <line num="31" count="11" type="cond" truecount="4" falsecount="0"/>
+        <line num="33" count="11" type="stmt"/>
+        <line num="46" count="5" type="stmt"/>
+        <line num="47" count="4" type="stmt"/>
+        <line num="48" count="4" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="51" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.src.routes">
+      <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="dividendRouter.ts" path="C:\Users\ester\GCEIC26-102\api\src\src\routes\dividendRouter.ts">
+        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
