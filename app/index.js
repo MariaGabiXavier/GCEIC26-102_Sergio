@@ -26,6 +26,7 @@ app.use(
 );
 
 
+
 const equipes = [
   { numero: 1, nome: 'ETEC1', rota: '/ETEC1/splash' },
   { numero: 2, nome: 'EXCHANGE', rota: '/exg' },
