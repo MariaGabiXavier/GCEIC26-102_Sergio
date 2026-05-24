@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="12" failures="0" errors="0" time="3.048">
-  <testsuite name="calcularMKD" errors="0" failures="0" skipped="0" timestamp="2026-05-20T03:20:50" time="2.003" tests="12">
-    <testcase classname="calcularMKD deve calcular MKD com valores válidos" name="calcularMKD deve calcular MKD com valores válidos" time="0.026">
+<testsuites name="jest tests" tests="18" failures="0" errors="0" time="0.964">
+  <testsuite name="calcularMKM" errors="0" failures="0" skipped="0" timestamp="2026-05-24T18:47:22" time="0.542" tests="17">
+    <testcase classname="calcularMKM deve calcular MKM com valores válidos" name="calcularMKM deve calcular MKM com valores válidos" time="0.004">
     </testcase>
-    <testcase classname="calcularMKD deve lançar erro quando dv for menor ou igual a zero" name="calcularMKD deve lançar erro quando dv for menor ou igual a zero" time="0.099">
+    <testcase classname="calcularMKM deve lançar erro quando dv for menor ou igual a zero" name="calcularMKM deve lançar erro quando dv for menor ou igual a zero" time="0.016">
     </testcase>
-    <testcase classname="calcularMKD deve lançar erro quando df for menor ou igual a zero" name="calcularMKD deve lançar erro quando df for menor ou igual a zero" time="0.009">
+    <testcase classname="calcularMKM deve lançar erro quando df for menor ou igual a zero" name="calcularMKM deve lançar erro quando df for menor ou igual a zero" time="0.003">
     </testcase>
-    <testcase classname="calcularMKD deve lançar erro quando ml for menor ou igual a zero" name="calcularMKD deve lançar erro quando ml for menor ou igual a zero" time="0.01">
+    <testcase classname="calcularMKM deve lançar erro quando ml for menor ou igual a zero" name="calcularMKM deve lançar erro quando ml for menor ou igual a zero" time="0.002">
     </testcase>
-    <testcase classname="calcularMKD deve retornar string formatada com 2 casas decimais" name="calcularMKD deve retornar string formatada com 2 casas decimais" time="0.006">
+    <testcase classname="calcularMKM deve retornar valor numérico" name="calcularMKM deve retornar valor numérico" time="0.001">
     </testcase>
-    <testcase classname="calcularPrecoVenda deve calcular preço de venda com valores válidos" name="calcularPrecoVenda deve calcular preço de venda com valores válidos" time="0.176">
+    <testcase classname="calcularPrecoVenda deve calcular preço de venda com valores válidos" name="calcularPrecoVenda deve calcular preço de venda com valores válidos" time="0.023">
     </testcase>
-    <testcase classname="calcularPrecoVenda deve lançar erro quando preco for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando preco for menor ou igual a zero" time="0.078">
+    <testcase classname="calcularPrecoVenda deve lançar erro quando preco for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando preco for menor ou igual a zero" time="0.016">
     </testcase>
-    <testcase classname="calcularPrecoVenda deve lançar erro quando dv for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando dv for menor ou igual a zero" time="0.052">
+    <testcase classname="calcularPrecoVenda deve lançar erro quando dv for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando dv for menor ou igual a zero" time="0.009">
     </testcase>
-    <testcase classname="calcularPrecoVenda deve lançar erro quando df for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando df for menor ou igual a zero" time="0.056">
+    <testcase classname="calcularPrecoVenda deve lançar erro quando df for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando df for menor ou igual a zero" time="0.026">
     </testcase>
-    <testcase classname="calcularPrecoVenda deve lançar erro quando ml for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando ml for menor ou igual a zero" time="0.041">
+    <testcase classname="calcularPrecoVenda deve lançar erro quando ml for menor ou igual a zero" name="calcularPrecoVenda deve lançar erro quando ml for menor ou igual a zero" time="0.015">
     </testcase>
-    <testcase classname="calcularPrecoVenda deve usar valores padrão quando parâmetros não fornecidos" name="calcularPrecoVenda deve usar valores padrão quando parâmetros não fornecidos" time="0.038">
+    <testcase classname="calcularPrecoVenda deve usar valores padrão quando parâmetros não fornecidos" name="calcularPrecoVenda deve usar valores padrão quando parâmetros não fornecidos" time="0.008">
     </testcase>
-    <testcase classname="calcularPrecoVenda deve retornar string formatada com 2 casas decimais" name="calcularPrecoVenda deve retornar string formatada com 2 casas decimais" time="0.015">
+    <testcase classname="calcularPrecoVenda deve retornar string formatada com 2 casas decimais" name="calcularPrecoVenda deve retornar string formatada com 2 casas decimais" time="0.002">
+    </testcase>
+    <testcase classname="calcularDesconto deve calcular preço com desconto com valores válidos" name="calcularDesconto deve calcular preço com desconto com valores válidos" time="0">
+    </testcase>
+    <testcase classname="calcularDesconto deve lançar erro quando preco for menor ou igual a zero" name="calcularDesconto deve lançar erro quando preco for menor ou igual a zero" time="0.001">
+    </testcase>
+    <testcase classname="calcularDesconto deve lançar erro quando desconto for menor que zero" name="calcularDesconto deve lançar erro quando desconto for menor que zero" time="0.002">
+    </testcase>
+    <testcase classname="calcularDesconto deve lançar erro quando desconto for maior que 100" name="calcularDesconto deve lançar erro quando desconto for maior que 100" time="0.001">
+    </testcase>
+    <testcase classname="calcularDesconto deve retornar string formatada com 2 casas decimais" name="calcularDesconto deve retornar string formatada com 2 casas decimais" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Teste de Saude -&gt; GET /health" errors="0" failures="0" skipped="0" timestamp="2026-05-24T18:47:22" time="0.262" tests="1">
+    <testcase classname="Teste de Saude -&gt; GET /health deve retornar status ok" name="Teste de Saude -&gt; GET /health deve retornar status ok" time="0.023">
     </testcase>
   </testsuite>
 </testsuites>

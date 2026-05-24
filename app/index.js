@@ -30,11 +30,26 @@ function requireAuth(req, res, next) {
 
 //rota splash screen
 app.get('/', (req, res) => {
-  res.render('splash', { error: null });
+  res.render('splash', { error: null,
+    user: req.session.user || null });
+});
+app.get('/splash', (req, res) => {
+  res.render('splash', { error: null,
+    user: req.session.user || null} );
 });
 
+//rota sobre
+app.get('/sobre', (req, res) => {
+  res.render('sobre', { error: null,
+    user: req.session.user || null});
+});
+//rota sobre
+app.get('/help', (req, res) => {
+  res.render('help', { error: null,
+    user: req.session.user || null});
+});
 app.get('/login', (req, res) => {
-  if (req.session.user) return res.redirect('/dashboard');
+  if (req.session.user) return res.redirect('/');
   res.render('login', { error: null });
 });
 
@@ -48,27 +63,76 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
   if (username === 'admin' && password === 'admin') {
     req.session.user = { username: 'admin', nome: 'Administrador' };
-    return res.redirect('/calculo');
+    return res.redirect('/');
   }
   res.render('login', { error: 'Usuário ou senha inválidos' });
 });
 
-// Dashboard
+// Dashboard (default: preço de venda)
 app.get('/calculo', requireAuth, (req, res) => {
-  res.render('calculo', { user: req.session.user });
+  res.render('calculo', { user: req.session.user, tipo: 'preco-venda' });
 });
 
-// Calcular encargos (proxy para API)
-app.post('/calcular', requireAuth, async (req, res) => {
+// Rotas para cada tipo de cálculo
+app.get('/preco-venda', requireAuth, (req, res) => {
+  res.render('calculo', { user: req.session.user, tipo: 'preco-venda' });
+});
+
+app.get('/margem-lucro', requireAuth, (req, res) => {
+  res.render('margemLucro', { user: req.session.user, tipo: 'margem-lucro' });
+});
+
+app.get('/desconto', requireAuth, (req, res) => {
+  res.render('desconto', { user: req.session.user, tipo: 'desconto' });
+});
+
+app.get('/markup-multiplicador', requireAuth, (req, res) => {
+  res.render('calcularMarkupMultiplicador', { user: req.session.user, tipo: 'markup-multiplicador' });
+});
+
+// Proxy para API /api/calcularPrecoVenda
+app.post('/calcularPrecoVenda', requireAuth, async (req, res) => {
   try {
     const fetch = (await import('node-fetch')).default;
-    console.log("passou 1");
-    const response = await fetch(`${API_URL}/api/calcular`, {
+    const response = await fetch(`${API_URL}/api/calcularPrecoVenda`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body),
     });
-    console.log("passou 1a");
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.log(err.message)
+    res.status(400).json({ success: false, error: err.message});  
+  }
+});
+
+// Proxy para API /api/calcularDesconto
+app.post('/calcularDesconto', requireAuth, async (req, res) => {
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch(`${API_URL}/api/calcularDesconto`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.log(err.message)
+    res.status(400).json({ success: false, error: err.message});  
+  }
+});
+
+// Proxy para API /api/calcularMarkupMultiplicador
+app.post('/calcularMarkupMultiplicador', requireAuth, async (req, res) => {
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch(`${API_URL}/api/calcularMarkupMultiplicador`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
     const data = await response.json();
     res.json(data);
   } catch (err) {
@@ -78,6 +142,6 @@ app.post('/calcular', requireAuth, async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ App Doméstica rodando: http://localhost:${PORT}`);
+  console.log(`✅ App rodando em: http://localhost:${PORT}`);
 });
 module.exports = app;
