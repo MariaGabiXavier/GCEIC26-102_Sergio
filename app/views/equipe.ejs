@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= nome %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --accent: #ff3c5f;
+      --accent2: #00e5ff;
+      --accent3: #aaff00;
+      --text: #e8e8f0;
+      --muted: #555570;
+
+      /* Dynamic accent based on team number */
+      --team-accent: <%
+        const n = numero;
+        if (n <= 5) { %>
+          #ff3c5f<% } else if (n <= 10) { %>
+          #00e5ff<% } else if (n <= 15) { %>
+          #aaff00<% } else { %>
+          #c77dff<% } %>;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,60,95,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,60,95,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .top-bar {
+      position: relative;
+      z-index: 1;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--text); }
+
+    .breadcrumb {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .breadcrumb span { color: var(--team-accent); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .big-number {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(120px, 25vw, 220px);
+      font-weight: 800;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--team-accent);
+      opacity: 0.12;
+      position: absolute;
+      user-select: none;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.10; }
+      50% { opacity: 0.18; }
+    }
+
+    .content {
+      position: relative;
+      animation: appear 0.5s ease both;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 14px;
+      border: 1px solid var(--team-accent);
+      color: var(--team-accent);
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--team-accent);
+    }
+
+    .endpoint {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-bottom: 40px;
+    }
+
+    .endpoint code {
+      color: var(--team-accent);
+      background: rgba(255,255,255,0.04);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: var(--team-accent);
+      margin: 32px auto;
+      opacity: 0.5;
+    }
+
+    .info-grid {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .info-item {
+      text-align: center;
+    }
+
+    .info-item .value {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--team-accent);
+    }
+
+    .info-item .label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 2px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <a href="/" class="back-link">← Voltar</a>
+    <span class="breadcrumb">/ <span><%= nome.toLowerCase() %></span></span>
+  </div>
+
+  <main>
+    <div class="big-number"><%= String(numero).padStart(2, '0') %></div>
+
+    <div class="content">
+      <div class="tag">Endpoint Ativo</div>
+      <h1><em><%= nome %></em></h1>
+      <p class="endpoint">Rota: <code>/equipe-<%= numero %></code></p>
+
+      <div class="divider"></div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="value"><%= String(numero).padStart(2, '0') %></div>
+          <div class="label">ID da Equipe</div>
+        </div>
+        <div class="info-item">
+          <div class="value">20</div>
+          <div class="label">Total de Equipes</div>
+        </div>
+        <div class="info-item">
+          <div class="value">ATIVO</div>
+          <div class="label">Status</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Painel de Equipes &nbsp;·&nbsp; <%= nome %>
+  </footer>
+
+</body>
+</html>

@@ -25,6 +25,30 @@ app.use(
   }),
 );
 
+
+const equipes = [
+  { numero: 1, nome: 'ETEC1', rota: '/ETEC1/splash' },
+  { numero: 2, nome: 'EXCHANGE', rota: '/exg' },
+  { numero: 3, nome: 'CDD', rota: '/cdd' },
+  { numero: 4, nome: 'CLT', rota: '/clt' },
+  { numero: 5, nome: 'Equipe-5', rota: '/equipe-5' },
+  { numero: 6, nome: 'Equipe-6', rota: '/equipe-6' },
+  { numero: 7, nome: 'Equipe-7', rota: '/equipe-7' },
+  { numero: 8, nome: 'Equipe-8', rota: '/equipe-8' },
+  { numero: 9, nome: 'Equipe-9', rota: '/equipe-9' },
+  { numero: 10, nome: 'Equipe-10', rota: '/equipe-10' },
+  { numero: 11, nome: 'Equipe-11', rota: '/equipe-11' },
+  { numero: 12, nome: 'Equipe-12', rota: '/equipe-12' },
+  { numero: 13, nome: 'Equipe-13', rota: '/equipe-13' },
+  { numero: 14, nome: 'Equipe-14', rota: '/equipe-14' },
+  { numero: 15, nome: 'Equipe-15', rota: '/equipe-15' },
+  { numero: 16, nome: 'Equipe-16', rota: '/equipe-16' },
+  { numero: 17, nome: 'Equipe-17', rota: '/equipe-17' },
+  { numero: 18, nome: 'Equipe-18', rota: '/equipe-18' },
+  { numero: 19, nome: 'Equipe-19', rota: '/equipe-19' },
+  { numero: 20, nome: 'Equipe-20', rota: '/equipe-20' }
+]
+
 // Auth middleware
 function requireAuth(req, res, next) {
   if (req.session && req.session.user) return next();
@@ -32,8 +56,9 @@ function requireAuth(req, res, next) {
 }
 
 app.get("/", (req, res) => {
-  if (req.session.user) return res.redirect("/dashboard");
-  res.render("inicial", { error: null });
+  res.render('index', { equipes });
+  //if (req.session.user) return res.redirect("/dashboard");
+  //res.render("inicial", { error: null });
 });
 
 app.get("/login", (req, res) => {
@@ -285,6 +310,20 @@ app.get('/clt/about', requireCltAuth, (req, res) => {
 app.get('/clt/help', requireCltAuth, (req, res) => {
   res.render('clt/help', { user: req.session.cltUser });
 });
+
+
+// 20 dynamic team endpoints
+for (let i = 5; i <= 20; i++) {
+  app.get(`/equipe-${i}`, (req, res) => {
+    console.log(`/equipe-${i}/equipe`);
+    res.render(`equipe`, {
+      numero: i,
+      nome: `Equipe-${i}`
+    });
+  });
+}
+
+
 
 app.listen(PORT, () => {
   console.log(`✅ App Doméstica rodando: http://localhost:${PORT}`);
