@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLT+ - Login</title>
+  <link rel="stylesheet" href="/clt.css">
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-card">
+      <div>
+        <div class="brand">CLT<span>+</span></div>
+        <p class="muted">Acesso ao simulador empresarial</p>
+      </div>
+
+      <% if (error) { %>
+        <div class="erro"><%= error %></div>
+      <% } %>
+
+      <form class="form-grid" method="POST" action="/clt/login">
+        <div class="field">
+          <div class="label-row">
+            <label for="username">Usuário <span class="required-star">*</span></label>
+          </div>
+          <input id="username" name="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <div class="label-row">
+            <label for="password">Senha <span class="required-star">*</span></label>
+          </div>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+      </form>
+
+      <p class="muted">Credenciais: adm / adm</p>
+    </section>
+  </main>
+</body>
+</html>

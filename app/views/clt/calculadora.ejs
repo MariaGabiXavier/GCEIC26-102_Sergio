@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLT+ - Calculadora</title>
+  <link rel="stylesheet" href="/clt.css">
+</head>
+<body>
+  <%- include('nav') %>
+  <main class="page-content">
+    <section class="calc-hero">
+      <div>
+        <span class="eyebrow">Calculadora empresarial</span>
+        <h1 class="page-title">Simulador de custo CLT</h1>
+        <p>Compare sal&aacute;rio l&iacute;quido, encargos, benef&iacute;cios e resultado financeiro da contrata&ccedil;&atilde;o em uma &uacute;nica simula&ccedil;&atilde;o.</p>
+      </div>
+      <div class="hero-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M7 4v16"/><path d="M17 4v16"/><path d="M4 17h16"/><path d="M9 10h2"/><path d="M9 14h2"/><path d="M14 10h2"/><path d="M14 14h2"/></svg>
+      </div>
+    </section>
+
+    <div class="app-grid">
+      <section class="card form-card">
+        <h2 class="section-title">Dados da contratação</h2>
+        <p class="section-subtitle">Preencha os valores mensais. Campos com <span class="required-star">*</span> são obrigatórios; os demais podem ficar em branco ou zero.</p>
+        <div id="erroBox" class="erro" style="display:none"></div>
+
+        <form id="cltForm" class="form-grid">
+          <div class="form-section">
+            <div class="form-section-title">Remuneração <span>base da simulação</span></div>
+            <div class="two-cols">
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="salarioBruto">Salário bruto <span class="required-star">*</span></label>
+                    <span class="hint" tabindex="0" data-tooltip="Valor registrado em carteira antes de INSS, IRRF e outros descontos.">?</span>
+                  </span>
+                </div>
+                <input id="salarioBruto" type="number" min="0.01" step="0.01" placeholder="Ex: 3000" required>
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="receitaGerada">Receita gerada</label>
+                    <span class="hint" tabindex="0" data-tooltip="Valor mensal que o funcionário gera, vende, entrega ou economiza para a empresa.">?</span>
+                  </span>
+                </div>
+                <input id="receitaGerada" type="number" min="0" step="0.01" placeholder="Ex: 8000">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <span class="label-main">
+                  <label for="dependentes">Dependentes</label>
+                  <span class="hint" tabindex="0" data-tooltip="Quantidade de dependentes considerada na dedução do Imposto de Renda.">?</span>
+                </span>
+              </div>
+              <input id="dependentes" type="number" min="0" step="1" placeholder="Ex: 0">
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Benefícios pagos pela empresa <span>custo mensal</span></div>
+            <div class="two-cols">
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="valeTransporte">Vale-transporte</label>
+                    <span class="hint" tabindex="0" data-tooltip="Valor mensal de transporte fornecido pela empresa ao funcionário.">?</span>
+                  </span>
+                </div>
+                <input id="valeTransporte" type="number" min="0" step="0.01" placeholder="Ex: 250">
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="valeRefeicao">Vale-refeição</label>
+                    <span class="hint" tabindex="0" data-tooltip="Benefício mensal para refeições durante a jornada de trabalho.">?</span>
+                  </span>
+                </div>
+                <input id="valeRefeicao" type="number" min="0" step="0.01" placeholder="Ex: 600">
+              </div>
+            </div>
+
+            <div class="two-cols">
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="alimentacao">Alimentação</label>
+                    <span class="hint" tabindex="0" data-tooltip="Vale-alimentação, cesta básica ou benefício similar pago mensalmente.">?</span>
+                  </span>
+                </div>
+                <input id="alimentacao" type="number" min="0" step="0.01" placeholder="Ex: 0">
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="planoSaude">Plano de saúde</label>
+                    <span class="hint" tabindex="0" data-tooltip="Custo mensal que a empresa paga pelo plano de saúde do funcionário.">?</span>
+                  </span>
+                </div>
+                <input id="planoSaude" type="number" min="0" step="0.01" placeholder="Ex: 250">
+              </div>
+            </div>
+
+            <div class="two-cols">
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="gympass">Bem-estar / academia</label>
+                    <span class="hint" tabindex="0" data-tooltip="Benefício de academia, saúde ou bem-estar, como Gympass ou similares.">?</span>
+                  </span>
+                </div>
+                <input id="gympass" type="number" min="0" step="0.01" placeholder="Ex: 80">
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="outrosBeneficios">Outros benefícios</label>
+                    <span class="hint" tabindex="0" data-tooltip="Soma de benefícios extras pagos pela empresa, como bônus fixo, auxílio ou convênio.">?</span>
+                  </span>
+                </div>
+                <input id="outrosBeneficios" type="number" min="0" step="0.01" placeholder="Ex: 0">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Descontos do funcionário <span>impacto no líquido</span></div>
+            <div class="two-cols">
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="descontoBeneficiosFuncionario">Desconto de benefícios</label>
+                    <span class="hint" tabindex="0" data-tooltip="Parte dos benefícios que é descontada diretamente do funcionário.">?</span>
+                  </span>
+                </div>
+                <input id="descontoBeneficiosFuncionario" type="number" min="0" step="0.01" placeholder="Ex: 0">
+              </div>
+              <div class="field">
+                <div class="label-row">
+                  <span class="label-main">
+                    <label for="outrosDescontos">Outros descontos</label>
+                    <span class="hint" tabindex="0" data-tooltip="Descontos adicionais, como adiantamentos, faltas, convênios ou acordos internos.">?</span>
+                  </span>
+                </div>
+                <input id="outrosDescontos" type="number" min="0" step="0.01" placeholder="Ex: 0">
+              </div>
+            </div>
+          </div>
+
+          <button id="submitBtn" class="btn btn-primary" type="submit">
+            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M8 17V9"/><path d="M12 17V7"/><path d="M16 17v-5"/><path d="M20 17v-3"/><path d="M3 19h18"/></svg>
+            Calcular custo e resultado
+          </button>
+        </form>
+      </section>
+
+      <section id="resultArea" class="result-panel">
+        <div class="card result-empty">
+          <svg class="empty-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-7"/><path d="M19 7h-4"/><path d="M19 7v4"/></svg>
+          <div>
+            <strong>Resultado da simulação</strong>
+            Preencha os campos e calcule para ver salário líquido, custo da empresa e lucro ou prejuízo.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function numero(id) {
+      var value = document.getElementById(id).value;
+      return Number(String(value || 0).replace(',', '.'));
+    }
+
+    function brl(value) {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
+    }
+
+    function row(label, value, cls) {
+      return '<div class="row ' + (cls || '') + '"><span>' + label + '</span><strong>' + brl(value) + '</strong></div>';
+    }
+
+    function renderResultado(data) {
+      var liquido = data.salarioLiquido;
+      var custo = data.custoEmpresa;
+      var resultado = data.resultado;
+      var statusClass = resultado.status === 'lucro' ? 'lucro' : 'prejuizo';
+      var metricClass = resultado.status === 'lucro' ? 'good' : 'bad';
+      var statusLabel = resultado.status === 'lucro' ? 'Lucro' : 'Prejuízo';
+
+      document.getElementById('resultArea').innerHTML =
+        '<div class="result-summary">' +
+          '<article class="card metric"><div class="metric-label">Salário líquido</div><div class="metric-value">' + brl(liquido.salarioLiquido) + '</div></article>' +
+          '<article class="card metric"><div class="metric-label">Custo mensal da empresa</div><div class="metric-value">' + brl(custo.custoMensal) + '</div></article>' +
+          '<article class="card metric"><div class="metric-label">Resultado mensal</div><div class="metric-value ' + metricClass + '">' + brl(resultado.mensal) + '</div><span class="status-pill ' + statusClass + '">' + statusLabel + '</span></article>' +
+        '</div>' +
+        '<div class="result-details-grid">' +
+        '<div class="card">' +
+          '<h2 class="section-title">Descontos do funcionário</h2>' +
+          '<div class="breakdown">' +
+            row('Salário bruto', liquido.salarioBruto) +
+            row('INSS', liquido.descontos.inss, 'negative') +
+            row('IRRF', liquido.descontos.irrf, 'negative') +
+            row('Vale-transporte', liquido.descontos.valeTransporte, 'negative') +
+            row('Benefícios descontados', liquido.descontos.beneficios, 'negative') +
+            row('Outros descontos', liquido.descontos.outros, 'negative') +
+            row('Salário líquido', liquido.salarioLiquido, 'positive') +
+          '</div>' +
+        '</div>' +
+        '<div class="card">' +
+          '<h2 class="section-title">Custo para a empresa</h2>' +
+          '<div class="breakdown">' +
+            row('Salário bruto', custo.salarioBruto) +
+            row('INSS patronal', custo.encargos.inssPatronal) +
+            row('RAT/SAT', custo.encargos.rat) +
+            row('Terceiros/Sistema S', custo.encargos.terceiros) +
+            row('FGTS', custo.encargos.fgts) +
+            row('Provisões de 13º e férias', custo.provisoes.total) +
+            row('Benefícios', custo.beneficios.total) +
+            row('Custo mensal total', custo.custoMensal) +
+            row('Custo anual estimado', custo.custoAnual) +
+          '</div>' +
+        '</div>' +
+        '<div class="card">' +
+          '<h2 class="section-title">Análise da contratação</h2>' +
+          '<div class="breakdown">' +
+            row('Receita gerada', data.receitaGerada, 'positive') +
+            row('Custo mensal', custo.custoMensal, 'negative') +
+            row('Lucro/prejuízo mensal', resultado.mensal, metricClass === 'good' ? 'positive' : 'negative') +
+            row('Ponto de equilíbrio', resultado.pontoEquilibrio) +
+          '</div>' +
+          '<p class="muted" style="margin-top:12px">Margem estimada: ' + resultado.margem.toFixed(2).replace('.', ',') + '% | Multiplicador do salário: ' + custo.multiplicadorSalario.toFixed(2).replace('.', ',') + 'x</p>' +
+        '</div>' +
+        '</div>';
+    }
+
+    document.getElementById('cltForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      var erroBox = document.getElementById('erroBox');
+      var submitBtn = document.getElementById('submitBtn');
+      erroBox.style.display = 'none';
+
+      var payload = {
+        salarioBruto: numero('salarioBruto'),
+        receitaGerada: numero('receitaGerada'),
+        dependentes: numero('dependentes'),
+        valeTransporte: numero('valeTransporte'),
+        valeRefeicao: numero('valeRefeicao'),
+        alimentacao: numero('alimentacao'),
+        planoSaude: numero('planoSaude'),
+        gympass: numero('gympass'),
+        outrosBeneficios: numero('outrosBeneficios'),
+        descontoBeneficiosFuncionario: numero('descontoBeneficiosFuncionario'),
+        outrosDescontos: numero('outrosDescontos')
+      };
+
+      if (!payload.salarioBruto || payload.salarioBruto <= 0) {
+        erroBox.textContent = 'Informe um salário bruto válido.';
+        erroBox.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-mini"></span> Calculando...';
+
+      try {
+        var res = await fetch('/clt/calcular', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        var json = await res.json();
+        if (!res.ok || !json.success) {
+          erroBox.textContent = json.erro || 'Erro ao calcular.';
+          erroBox.style.display = 'block';
+          return;
+        }
+        renderResultado(json.data);
+      } catch (err) {
+        erroBox.textContent = 'Erro ao comunicar com o servidor.';
+        erroBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M8 17V9"/><path d="M12 17V7"/><path d="M16 17v-5"/><path d="M20 17v-3"/><path d="M3 19h18"/></svg> Calcular custo e resultado';
+      }
+    });
+  </script>
+</body>
+</html>

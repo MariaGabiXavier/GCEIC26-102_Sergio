@@ -221,6 +221,71 @@ app.get("/cdd", (req, res) => {
   res.sendFile(path.join(__dirname, "views/cdd/index.html"));
 });
 
+// Rotas CLT Empresarial
+
+function requireCltAuth(req, res, next) {
+  if (req.session && req.session.cltUser) return next();
+  res.redirect('/clt/login');
+}
+
+app.get('/clt', (_req, res) => {
+  res.render('clt/splash');
+});
+
+app.get('/clt/login', (req, res) => {
+  if (req.session.cltUser) return res.redirect('/clt/dashboard');
+  res.render('clt/login', { error: null });
+});
+
+app.post('/clt/login', (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.render('clt/login', { error: 'Preencha usuário e senha' });
+  }
+  if (username === 'adm' && password === 'adm') {
+    req.session.cltUser = { username: 'adm', nome: 'Administrador' };
+    return res.redirect('/clt/dashboard');
+  }
+  return res.render('clt/login', { error: 'Usuário ou senha inválidos' });
+});
+
+app.get('/clt/logout', (req, res) => {
+  req.session.cltUser = null;
+  res.redirect('/clt/login');
+});
+
+app.get('/clt/dashboard', requireCltAuth, (req, res) => {
+  res.render('clt/dashboard', { user: req.session.cltUser });
+});
+
+app.get('/clt/calculadora', requireCltAuth, (req, res) => {
+  res.render('clt/calculadora', { user: req.session.cltUser });
+});
+
+app.post('/clt/calcular', requireCltAuth, async (req, res) => {
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const payload = { ...req.body, token: 'token-clt-empresarial-123' };
+    const response = await fetch(`${API_URL}/api/clt/resultado-contratacao`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    res.status(400).json({ success: false, erro: err.message });
+  }
+});
+
+app.get('/clt/about', requireCltAuth, (req, res) => {
+  res.render('clt/about', { user: req.session.cltUser });
+});
+
+app.get('/clt/help', requireCltAuth, (req, res) => {
+  res.render('clt/help', { user: req.session.cltUser });
+});
+
 app.listen(PORT, () => {
   console.log(`✅ App Doméstica rodando: http://localhost:${PORT}`);
 });
