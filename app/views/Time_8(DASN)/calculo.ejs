@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cálculo | DASN</title>
+    <link rel="stylesheet" href="/dasn.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="nav-links">
+            <a href="/DASN/sobre" class="link">Sobre</a>
+            <a href="/DASN/help" class="link">Ajuda</a>
+            <a href="/DASN/logout" class="link">Sair</a>
+        </div>
+        <span class="breadcrumb">/ <span>cálculo</span></span>
+    </div>
+
+    <main>
+        <div class="big-number">08</div>
+        <div class="content">
+            <div class="tag">Painel DASN-SIMEI</div>
+            <h1><em>Módulos de</em> Cálculo</h1>
+            
+            <div class="box">
+                <h2>1. Validação de Limite Anual</h2>
+                <form id="limiteForm">
+                    <div class="input-group">
+                        <label>Receita Comércio</label>
+                        <input type="number" id="comercio" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Receita Serviços</label>
+                        <input type="number" id="servicos" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Meses Ativos</label>
+                        <input type="number" id="meses" required min="1" max="12">
+                    </div>
+                    <button type="submit">Calcular Limite</button>
+                </form>
+                <div id="resultadoLimite"></div>
+            </div>
+
+            <div class="box" style="margin-top: 30px;">
+                <h2>2. Multa por Atraso de Entrega</h2>
+                <form id="multaForm">
+                    <div class="input-group">
+                        <label>Meses de Atraso</label>
+                        <input type="number" id="mesesAtraso" required min="0">
+                    </div>
+                    <button type="submit">Calcular Multa</button>
+                </form>
+                <div id="resultadoMulta"></div>
+            </div>
+
+            <div class="box" style="margin-top: 30px;">
+                <h2>3. Lucro Isento e Tributável</h2>
+                <form id="lucroForm">
+                    <div class="input-group">
+                        <label>Receita Bruta de Serviços</label>
+                        <input type="number" id="lucroServicos" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Despesas Comprovadas</label>
+                        <input type="number" id="despesas" required>
+                    </div>
+                    <button type="submit">Calcular Lucro</button>
+                </form>
+                <div id="resultadoLucro"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('limiteForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const response = await fetch('/DASN/valida-limite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    receitaComercio: document.getElementById('comercio').value,
+                    receitaServicos: document.getElementById('servicos').value,
+                    mesesAtivos: document.getElementById('meses').value
+                })
+            });
+            const data = await response.json();
+            document.getElementById('resultadoLimite').innerHTML = `
+                <div id="resultado" style="margin-top:15px;">
+                    <p>Receita Total: <strong>R$ ${data.receitaTotal.toFixed(2)}</strong></p>
+                    <p>Limite Permitido: <strong>R$ ${data.limitePermitido.toFixed(2)}</strong></p>
+                    <p>Excedeu o Limite: <strong>${data.excedeuLimite ? 'Sim' : 'Não'}</strong></p>
+                    <p>Valor Excedido: <strong>R$ ${data.valorExcedido.toFixed(2)}</strong></p>
+                </div>
+            `;
+        });
+
+        document.getElementById('multaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const response = await fetch('/DASN/multa-atraso', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mesesAtraso: document.getElementById('mesesAtraso').value
+                })
+            });
+            const data = await response.json();
+            document.getElementById('resultadoMulta').innerHTML = `
+                <div id="resultado" style="margin-top:15px;">
+                    <p>Total da Multa: <strong>R$ ${data.multa.toFixed(2)}</strong></p>
+                </div>
+            `;
+        });
+
+        document.getElementById('lucroForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const response = await fetch('/DASN/lucro-isento', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    receitaServicos: document.getElementById('lucroServicos').value,
+                    despesas: document.getElementById('despesas').value
+                })
+            });
+            const data = await response.json();
+            document.getElementById('resultadoLucro').innerHTML = `
+                <div id="resultado" style="margin-top:15px;">
+                    <p>Percentual de Presunção (32%): <strong>R$ ${data.presuncao.toFixed(2)}</strong></p>
+                    <p>Lucro Real Líquido: <strong>R$ ${data.lucroReal.toFixed(2)}</strong></p>
+                    <p>Lucro Tributável: <strong>R$ ${data.lucroTributavel.toFixed(2)}</strong></p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
