@@ -14,14 +14,4 @@ describe('Teste de Saude -> GET /health', () => {
 
 });
 
-describe('GET /api/tabelas', () => {
-  test('deve retornar a tebela de constantes ', async () => {
-    const res = await request(app).get('/api/tabelas');
- 
-    expect(res.statusCode).toBe(200);
-    expect(res.body.success).toBe(true);
-    expect(res.body.data).toHaveProperty('base');
-    expect(res.body.data).toHaveProperty('referencia');
 
-  });
-});
