@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | DASN</title>
+    <link rel="stylesheet" href="/dasn.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/" class="link">← Voltar</a>
+        <span class="breadcrumb">/ <span>login</span></span>
+    </div>
+
+    <main>
+        <div class="big-number">08</div>
+        <div class="content">
+            <h1><em>Autenticação</em></h1>
+            
+            <div class="box">
+                <% if (typeof erro !== 'undefined' && erro) { %>
+                    <div class="error"><%= erro %></div>
+                <% } %>
+
+                <form action="/DASN/login" method="POST">
+                    <div class="input-group">
+                        <label>Usuário</label>
+                        <input type="text" name="usuario" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Senha</label>
+                        <input type="password" name="senha" required>
+                    </div>
+                    <button type="submit">Acessar Sistema</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

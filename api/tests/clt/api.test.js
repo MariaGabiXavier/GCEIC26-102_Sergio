@@ -5,13 +5,13 @@ const TOKEN = 'token-clt-empresarial-123';
 
 describe('API CLT - autenticacao', () => {
   test('retorna token com credenciais validas', async () => {
-    const res = await request(app).post('/api/clt/login').send({ user: 'adm', password: 'adm' });
+    const res = await request(app).post('/api/clt/login').send({ user: 'admin', password: 'admin' });
     expect(res.statusCode).toBe(200);
     expect(res.body.token).toBe(TOKEN);
   });
 
   test('recusa credenciais invalidas', async () => {
-    const res = await request(app).post('/api/clt/login').send({ user: 'adm', password: 'errada' });
+    const res = await request(app).post('/api/clt/login').send({ user: 'admin', password: 'errada' });
     expect(res.statusCode).toBe(401);
   });
 
