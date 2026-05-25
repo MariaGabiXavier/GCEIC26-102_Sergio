@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Screen</title>
+    <link rel="stylesheet" href="/financecar.css">
+</head>
+<body>
+
+    <div class="splash">
+        <img src="/assets/financecar/logo_inteira.svg" alt="Logo" class="logo-splash" />
+
+        <br>
+
+        <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "/financecar/login";
+        }, 10000);
+    </script>
+
+</body>
+</html>

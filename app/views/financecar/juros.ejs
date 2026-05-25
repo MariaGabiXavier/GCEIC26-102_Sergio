@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juros Compostos - FinanceCar</title>
+    <link rel="stylesheet" href="/financecar.css">
+</head>
+<body>
+    <div id="root">
+    <div class="juros">
+        <%- include('partials/header') %>
+
+        <div class="help-container">
+            <button class="help-btn" onclick="document.getElementById('helpOverlay').style.display = 'flex'">
+                <img src="/assets/financecar/help.svg" alt="Ajuda" class="help" />
+            </button>
+        </div>            
+
+        <h1>Cálculo de Juros Compostos</h1>
+
+        <section class="calculo-juros">
+            <div class="card-juros">
+                <input type="number" id="valorInicial" placeholder="Valor inicial" oninput="clearError()" />
+                <input type="number" id="aporteMensal" placeholder="Aporte mensal" oninput="clearError()" />
+                <input type="number" id="taxaJuros" placeholder="Taxa de juros (%)" oninput="clearError()" />
+                <input type="number" id="tempo" placeholder="Tempo em meses" oninput="clearError()" />
+
+                <p class="error" id="errorMsg" style="display: none;"></p>
+
+                <button onclick="calcular()" id="btn-calcular">Calcular</button>
+
+                <h2 id="resultadoMsg" style="display: none;"></h2>
+            </div>
+        </section>
+
+        <div class="overlay" id="helpOverlay" style="display: none;" onclick="this.style.display='none'">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="icon">
+                    <img src="/assets/financecar/grafic.svg" alt="Juros Compostos" class="grafic" />
+                    <h2>Juros Compostos</h2>
+                </div>
+
+                <p>
+                    Juros compostos são quando os juros são calculados não só sobre o valor inicial,
+                    mas também sobre os juros acumulados ao longo do tempo.
+                </p>
+
+                <p>
+                    Isso faz o dinheiro crescer de forma acelerada, porque cada mês você ganha juros
+                    sobre um valor maior do que o anterior.
+                </p>
+
+                <hr />
+
+                <h3>O que significa cada campo?</h3>
+
+                <p>
+                    <strong>Valor inicial:</strong><br />
+                    É o dinheiro que você investe no começo. Exemplo: R$ 1.000.
+                </p>
+
+                <p>
+                    <strong>Aporte mensal:</strong><br />
+                    É o valor que você adiciona todo mês ao investimento. Exemplo: R$ 200 por mês.
+                </p>
+
+                <p>
+                    <strong>Taxa de juros:</strong><br />
+                    É a porcentagem de rendimento mensal do investimento. Exemplo: 1% ao mês.
+                </p>
+
+                <p>
+                    <strong>Tempo:</strong><br />
+                    É por quantos meses o dinheiro vai ficar investido.
+                </p>
+
+                <hr />
+
+                <p style="font-weight: bold;" class="icon">
+                    <img src="/assets/financecar/hint.svg" alt="Dica" />
+                    Dica: quanto maior o tempo, maior o efeito dos juros compostos!
+                </p>
+
+                <button onclick="document.getElementById('helpOverlay').style.display='none'">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <%- include('partials/logout-popup') %>
+    </div>
+
+    <script>
+        function clearError() {
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        async function calcular() {
+            const valorInicial = document.getElementById('valorInicial').value;
+            const aporteMensal = document.getElementById('aporteMensal').value;
+            const taxaJuros = document.getElementById('taxaJuros').value;
+            const tempo = document.getElementById('tempo').value;
+
+            const errorMsg = document.getElementById('errorMsg');
+            const resultadoMsg = document.getElementById('resultadoMsg');
+
+            // limpa mensagens anteriores
+            errorMsg.style.display = 'none';
+            resultadoMsg.style.display = 'none';
+
+            if (!valorInicial || !aporteMensal || !taxaJuros || !tempo) {
+                errorMsg.innerText = "Preencha todos os campos!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            if (
+                Number(valorInicial) <= 0 ||
+                Number(aporteMensal) < 0 ||
+                Number(taxaJuros) <= 0 ||
+                Number(tempo) <= 0
+            ) {
+                errorMsg.innerText = "Digite valores válidos!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/financecar/juros", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        valorInicial: Number(valorInicial),
+                        aporteMensal: Number(aporteMensal),
+                        taxaJuros: Number(taxaJuros),
+                        tempo: Number(tempo)
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log(data);
+
+                if (!response.ok) {
+                    resultadoMsg.style.display = 'none';
+
+                    errorMsg.innerText = data.erro || "Erro ao calcular.";
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                const resultado =
+                    data.valorFinal ||
+                    data.montante ||
+                    data.resultado ||
+                    data.valor;
+
+                resultadoMsg.innerText = `Resultado: R$ ${Number(resultado).toFixed(2)}`;
+                resultadoMsg.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+
+                resultadoMsg.style.display = 'none';
+
+                errorMsg.innerText = "Erro ao calcular.";
+                errorMsg.style.display = 'block';
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>

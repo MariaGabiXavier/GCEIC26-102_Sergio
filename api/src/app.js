@@ -3,6 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const etec1 = require("./Time_2(ETEC1)/etec1.route");
 const exgRouter = require("./exg/exgApp");
+const financeRouter = require("./financecar/financeApp")
 const cltRouter = require("./clt/cltApp");
 const markup = require("./markup/markup.app");
 
@@ -58,7 +59,7 @@ app.use("/api/markup", markup);
 
 // Rotas EXG
 app.use("/api/exg", exgRouter);
-app.use("/api/clt", cltRouter);
+app.use("/api/financecar", financeRouter);
 
 // Rotas ETEC1
 app.use("/ETEC1", etec1);
