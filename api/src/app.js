@@ -5,6 +5,7 @@ const etec1 = require("./Time_2(ETEC1)/etec1.route");
 const exgRouter = require("./exg/exgApp");
 const financeRouter = require("./financecar/financeApp");
 const cltRouter = require("./clt/cltApp");
+const dasn = require("./Time_8(DASN)/dasn");
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use("/ETEC1", etec1);
 app.use("/api/exg", exgRouter);
 app.use("/api/financecar", financeRouter);
 app.use("/api/clt", cltRouter);
+app.use("/DASN", dasn);
 
 // Rotas CD (compilado TS)
 const cdRouter = require("./cdd/routes/dividendRouter").default;
