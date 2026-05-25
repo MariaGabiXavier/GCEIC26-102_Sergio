@@ -243,6 +243,7 @@ app.get("/exg/help", requireExgAuth, (req, res) => {
 });
 
 
+
 // ROTAS FINANCECAR (Time 6)
 function requireFinanceAuth(req, res, next) {
   if (req.session && req.session.financeUser) return next();
@@ -435,6 +436,69 @@ app.post("/api/financecar/regra", requireFinanceAuth, async (req, res) => {
       error: err.message,
     });
   }
+});
+
+// -- Time_10_Piscina --
+
+function requirePiscinaAuth(req, res, next) {
+  if (req.session && req.session.piscinaUser) return next();
+  res.redirect('/piscina/login');
+}
+
+app.get('/piscina', (req, res) => {
+  res.render('Time_10_Piscina/splash');
+});
+
+app.get('/piscina/login', (req, res) => {
+  if (req.session.piscinaUser) return res.redirect('/piscina/calculo');
+  res.render('Time_10_Piscina/login', { error: null });
+});
+
+app.post('/piscina/login', (req, res) => {
+  const { username, password } = req.body;
+  if (username === 'admin' && password === 'admin') {
+    req.session.piscinaUser = username;
+    return res.redirect('/piscina/calculo');
+  }
+  res.render('Time_10_Piscina/login', { error: 'Usuário ou senha inválidos' });
+});
+
+app.get('/piscina/calculo', requirePiscinaAuth, (req, res) => {
+  res.render('Time_10_Piscina/calculo', { resultado: null });
+});
+
+app.post('/piscina/calculo', requirePiscinaAuth, async (req, res) => {
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch(`${API_URL}/api/Time_10_piscina/calcular-total`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        comprimento: Number(req.body.comprimento),
+        largura: Number(req.body.largura),
+        profundidade: Number(req.body.profundidade),
+        temIluminacao: req.body.temIluminacao === 'on',
+      }),
+    });
+    const resultado = await response.json();
+    res.render('Time_10_Piscina/calculo', { resultado });
+  } catch (error) {
+    console.log(error);
+    res.render('Time_10_Piscina/calculo', { resultado: null });
+  }
+});
+
+app.get('/piscina/sobre', requirePiscinaAuth, (req, res) => {
+  res.render('Time_10_Piscina/sobre');
+});
+
+app.get('/piscina/help', requirePiscinaAuth, (req, res) => {
+  res.render('Time_10_Piscina/help');
+});
+
+app.get('/piscina/logout', (req, res) => {
+  req.session.piscinaUser = null;
+  res.redirect('/piscina/login');
 });
 
 // Rota CD - serve o React compilado
