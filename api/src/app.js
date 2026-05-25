@@ -3,6 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const etec1 = require('./Time_2(ETEC1)/etec1.route');
 const exgRouter = require("./exg/exgApp");
+const cltRouter = require("./clt/cltApp");
 const markup = require("./markup/markup.app");
 
 const app = express();
@@ -60,6 +61,9 @@ app.use("/api/exg", exgRouter);
 
 // Rotas ETEC1
 app.use("/ETEC1", etec1);
+
+// Rotas CLT
+app.use("/api/clt", cltRouter);
 
 // Rotas CD (compilado TS)
 const cdRouter = require("./cdd/routes/dividendRouter").default;
