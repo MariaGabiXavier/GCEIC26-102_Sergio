@@ -13,6 +13,7 @@ const API_URL = process.env.API_URL || "http://localhost:3001";
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/cdd", express.static(path.join(__dirname, "views/cdd")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -31,7 +32,7 @@ const equipes = [
   { numero: 2, nome: 'EXCHANGE', rota: '/exg' },
   { numero: 3, nome: 'CDD', rota: '/cdd' },
   { numero: 4, nome: 'CLT', rota: '/clt' },
-  { numero: 5, nome: 'Equipe-5', rota: '/equipe-5' },
+  { numero: 5, nome: 'MKP', rota: '/MKP' },
   { numero: 6, nome: 'FinanceCar', rota: '/financecar' },
   { numero: 7, nome: 'Equipe-7', rota: '/equipe-7' },
   { numero: 8, nome: 'DASN-SIMEI', rota: '/DASN' },
@@ -440,6 +441,33 @@ app.post("/api/financecar/regra", requireFinanceAuth, async (req, res) => {
 app.get("/cdd", (req, res) => {
   res.sendFile(path.join(__dirname, "views/cdd/index.html"));
 });
+
+// Rotas MKP
+app.get('/MKP', (req, res) => {
+  res.render('mkp/mkp');
+});
+
+async function proxyMkpToApi(path, req, res) {
+  try {
+    const target = `${API_URL}${path}`;
+    const fetchRes = await fetch(target, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body)
+    });
+
+    const data = await fetchRes.text();
+    res.status(fetchRes.status).type('application/json').send(data);
+  } catch (err) {
+    console.error('Proxy error', err);
+    res.status(500).json({ error: 'Erro ao encaminhar a requisição para a API.' });
+  }
+}
+
+app.post('/MKP/markup', (req, res) => proxyMkpToApi('/MKP/markup', req, res));
+app.post('/MKP/custos', (req, res) => proxyMkpToApi('/MKP/custos', req, res));
+app.post('/MKP/preco-venda', (req, res) => proxyMkpToApi('/MKP/preco-venda', req, res));
+
 
 // Rotas CLT Empresarial
 

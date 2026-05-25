@@ -7,6 +7,9 @@ const financeRouter = require("./financecar/financeApp");
 const cltRouter = require("./clt/cltApp");
 const markup = require("./markup/markup.app");
 const dasn = require("./Time_8(DASN)/dasn");
+const financeRouter = require("./financecar/financeApp")
+const mkpRouter = require("./mkp/app");
+
 
 const app = express();
 
@@ -68,6 +71,7 @@ app.use("/ETEC1", etec1);
 // Rotas CLT
 app.use("/api/clt", cltRouter);
 app.use("/DASN", dasn);
+app.use("/MKP", mkpRouter);
 
 // Rotas CD (compilado TS)
 const cdRouter = require("./cdd/routes/dividendRouter").default;

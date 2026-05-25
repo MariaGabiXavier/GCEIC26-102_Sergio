@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CalcMarkup - MKP</title>
+    <link rel="stylesheet" href="/public/mkp/css/mkp.css">
+  </head>
+  <body>
+    <div id="root">
+      <!-- Splash -->
+      <div id="splash" class="screen-center splash-bg">
+        <div class="splash-content">
+          <h1>CalcMarkup</h1>
+          <p>Carregando o seu sistema financeiro...</p>
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- Login -->
+      <div id="login" class="screen-center login-bg" style="display:none;">
+        <div class="card login-card">
+          <h2>Entrar</h2>
+          <p class="subtitle">Insira suas credenciais para continuar</p>
+          <form id="loginForm" class="form-grid">
+            <div class="input-group"><input id="usuario" type="text" placeholder="Usuário" required></div>
+            <div class="input-group"><input id="senha" type="password" placeholder="Senha" required></div>
+            <p id="loginErro" class="error-message" style="display:none;"></p>
+            <button type="submit" class="btn-primary">Entrar</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Dashboard -->
+      <div id="app" class="app-container" style="display:none;">
+        <div id="layout" class="dashboard-layout sidebar-expandida">
+          <nav class="sidebar">
+            <div class="sidebar-header">
+              <span class="nav-logo">CM</span>
+              <button id="toggleSidebar" class="toggle-sidebar-btn"><i data-lucide="menu"></i></button>
+            </div>
+
+            <div class="sidebar-links">
+              <button id="btnPrincipal" class="active"><i data-lucide="calculator" class="icon-lucide"></i><span class="link-text">Calculadora</span></button>
+              <button id="btnSobre"><i data-lucide="users" class="icon-lucide"></i><span class="link-text">Sobre a Equipe</span></button>
+              <button id="btnHelp"><i data-lucide="help-circle" class="icon-lucide"></i><span class="link-text">Ajuda / FAQ</span></button>
+            </div>
+
+            <button id="logoutBtn" class="logout-btn"><i data-lucide="log-out" class="icon-lucide"></i><span class="link-text">Sair</span></button>
+          </nav>
+
+          <main class="main-content">
+            <section id="principal">
+              <div class="container-calculadora">
+                <div class="card">
+                  <h3>Preencha os dados abaixo:</h3>
+                  <form id="calcForm" class="form-grid">
+                    <div class="input-group"><label>Custo do Produto (R$)</label><input id="custoProduto" type="number" step="0.01" required placeholder="Ex: 50.00"></div>
+                    <div class="input-group"><label>Despesas Variáveis (%)</label><input id="despesasVariaveis" type="number" required placeholder="Ex: 10"></div>
+                    <div class="input-group"><label>Despesas Fixas (%)</label><input id="despesasFixas" type="number" required placeholder="Ex: 15"></div>
+                    <div class="input-group"><label>Margem Desejada (%) <small>(Max 20%)</small></label><input id="margemLucro" type="number" max="20" required placeholder="Ex: 20"></div>
+                    <button type="submit" class="btn-primary">Calcular Preço Ideal</button>
+                  </form>
+                </div>
+                <div id="resultadoBox" class="card result-card" style="display:none;">
+                  <div class="result-item"><span>Markup Multiplicador:</span><strong id="multiplicadorText"></strong></div>
+                  <div class="deestaque"><span>Preço Sugerido:</span><strong id="precoVendaText" class="text-sucess"></strong></div>
+                </div>
+              </div>
+            </section>
+
+            <section id="sobre" style="display:none;">
+              <div class="team-container-center">
+                <h2>Conheça Nossa Equipe</h2>
+                <p class="subtitle">Projeto desenvolvido para a disciplina de Gerência de Configuração, Entrega e Integração Contínua no curso de Engenharia de Software.</p>
+                <div class="team-photo-card card">
+                  <img src="/public/mkp/assets/foto_grupo_mkp.jpeg" alt="Foto do grupo" class="team-photo" />
+                </div>
+                <h2>Contribuições</h2>
+                <div class="team-grid">
+                  <div class="card team-card"><img src="/public/mkp/assets/foto_integrante_joao.png" class="team-img" /><h4>João Pedro Pires de Andrade</h4><p>Representante do grupo, Desenvolvedor do Backend e a API /MKP/custos</p></div>
+                  <div class="card team-card"><img src="/public/mkp/assets/foto_integrante_lucca.png" class="team-img" /><h4>Lucca Schroelder Scovini</h4><p>Desenvolvedor do Frontend e a API /MKP/markup</p></div>
+                  <div class="card team-card"><img src="/public/mkp/assets/foto_integrante_augusto.png" class="team-img" /><h4>Augusto Fidélis dos Santos Custódio</h4><p>Responsável pelos Testes, Documentação e Desenvolvedor da API /MKP/preco-venda</p></div>
+                </div>
+              </div>
+            </section>
+
+            <section id="help" style="display:none;">
+              <div class="help-container">
+                <h2>Central de Ajuda</h2>
+                <p class="subtitle">Entenda como extrair o melhor valor da nossa calculadora.</p>
+                <div class="card faq-section">
+                  <h3>Fórmula Utilizada</h3>
+                  <div class="formula-box">Markup = 100 / (100 - (DV + DF + ML))</div>
+                  <p class="note">Onde: <strong>DV</strong> = Despesas Variáveis (%), <strong>DF</strong> = Despesas Fixas (%), <strong>ML</strong> = Margem de Lucro Desejada (%).</p>
+                </div>
+
+                <div class="card faq-list">
+                  <h3>O que significa cada campo?</h3>
+                  <dl class="faq-list-entries">
+                    <dt>Custo do Produto (R$)</dt>
+                    <dd>O custo direto de aquisição ou produção do item. Deve incluir matérias-primas, componentes e custo de fabricação por unidade.</dd>
+                    <dt>Despesas Variáveis (%)</dt>
+                    <dd>Percentual de custos que variam com a produção ou venda (ex.: comissões, embalagens, taxas por venda). Informe em porcentagem sobre o custo.</dd>
+                    <dt>Despesas Fixas (%)</dt>
+                    <dd>Percentual de custos que não dependem diretamente do volume (ex.: aluguel, energia, salários administrativos). Convertidas em percentual sobre o custo para compor o markup.</dd>
+                    <dt>Margem Desejada (%)</dt>
+                    <dd>Percentual de lucro líquido desejado sobre o preço de venda. Este projeto limita por padrão a 20% para fins de demonstração.</dd>
+                  </dl>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/public/mkp/js/mkp.js"></script>
+  </body>
+</html>
