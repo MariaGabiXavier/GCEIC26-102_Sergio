@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLT+ - Dashboard</title>
+  <link rel="stylesheet" href="/clt.css">
+</head>
+<body>
+  <%- include('nav') %>
+  <main class="page-content">
+    <section class="hero">
+      <h1>Entenda o custo real de uma contratação CLT</h1>
+      <p>Compare salário líquido, benefícios, encargos e retorno financeiro em uma simulação simples para decisões empresariais.</p>
+      <div>
+        <a class="btn btn-primary" href="/clt/calculadora">Nova simulação</a>
+      </div>
+    </section>
+
+    <section class="metric-grid">
+      <article class="card metric">
+        <div class="metric-label">Funcionário</div>
+        <div class="metric-value">Salário líquido</div>
+        <p class="muted">Mostra quanto o colaborador recebe após descontos de folha.</p>
+      </article>
+      <article class="card metric">
+        <div class="metric-label">Empresa</div>
+        <div class="metric-value">Custo total</div>
+        <p class="muted">Soma salário, encargos, provisões e benefícios mensais.</p>
+      </article>
+      <article class="card metric">
+        <div class="metric-label">Contratação</div>
+        <div class="metric-value">Resultado</div>
+        <p class="muted">Compara a receita gerada com o custo completo do funcionário.</p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Objetivo do projeto</h2>
+      <p class="muted">
+        O CLT+ mostra que o salário bruto não representa nem o valor líquido recebido pelo funcionário
+        nem o custo real pago pela empresa. A simulação organiza esses números para apoiar análises de contratação.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

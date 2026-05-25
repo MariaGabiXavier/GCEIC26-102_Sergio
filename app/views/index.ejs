@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Equipes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --accent: #ff3c5f;
+      --accent2: #00e5ff;
+      --accent3: #aaff00;
+      --text: #e8e8f0;
+      --muted: #555570;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,60,95,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,60,95,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 60px 40px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .header-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 120px;
+      font-weight: 800;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--accent);
+      opacity: 0.15;
+      user-select: none;
+    }
+
+    .header-text h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .header-text h1 span {
+      color: var(--accent);
+    }
+
+    .header-text p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 50px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .btn-equipe {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      min-height: 110px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .btn-equipe:nth-child(1)  { animation-delay: 0.02s; }
+    .btn-equipe:nth-child(2)  { animation-delay: 0.04s; }
+    .btn-equipe:nth-child(3)  { animation-delay: 0.06s; }
+    .btn-equipe:nth-child(4)  { animation-delay: 0.08s; }
+    .btn-equipe:nth-child(5)  { animation-delay: 0.10s; }
+    .btn-equipe:nth-child(6)  { animation-delay: 0.12s; }
+    .btn-equipe:nth-child(7)  { animation-delay: 0.14s; }
+    .btn-equipe:nth-child(8)  { animation-delay: 0.16s; }
+    .btn-equipe:nth-child(9)  { animation-delay: 0.18s; }
+    .btn-equipe:nth-child(10) { animation-delay: 0.20s; }
+    .btn-equipe:nth-child(11) { animation-delay: 0.22s; }
+    .btn-equipe:nth-child(12) { animation-delay: 0.24s; }
+    .btn-equipe:nth-child(13) { animation-delay: 0.26s; }
+    .btn-equipe:nth-child(14) { animation-delay: 0.28s; }
+    .btn-equipe:nth-child(15) { animation-delay: 0.30s; }
+    .btn-equipe:nth-child(16) { animation-delay: 0.32s; }
+    .btn-equipe:nth-child(17) { animation-delay: 0.34s; }
+    .btn-equipe:nth-child(18) { animation-delay: 0.36s; }
+    .btn-equipe:nth-child(19) { animation-delay: 0.38s; }
+    .btn-equipe:nth-child(20) { animation-delay: 0.40s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Color accent bar per row group */
+    .btn-equipe:nth-child(-n+5)::before   { background: var(--accent); }
+    .btn-equipe:nth-child(n+6):nth-child(-n+10)::before  { background: var(--accent2); }
+    .btn-equipe:nth-child(n+11):nth-child(-n+15)::before { background: var(--accent3); }
+    .btn-equipe:nth-child(n+16)::before   { background: #c77dff; }
+
+    .btn-equipe::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      transition: width 0.25s ease;
+    }
+
+    .btn-equipe:hover {
+      border-color: #2e2e4a;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+
+    .btn-equipe:hover::before {
+      width: 6px;
+    }
+
+    .btn-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--muted);
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .btn-equipe:hover .btn-num {
+      -webkit-text-stroke: 1px var(--text);
+    }
+
+    .btn-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .btn-equipe:hover .btn-label {
+      color: var(--text);
+    }
+
+    .btn-arrow {
+      position: absolute;
+      bottom: 18px;
+      right: 18px;
+      font-size: 16px;
+      opacity: 0;
+      transform: translate(-4px, 4px);
+      transition: all 0.2s ease;
+      color: var(--text);
+    }
+
+    .btn-equipe:hover .btn-arrow {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 30px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 2px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-number">20</div>
+    <div class="header-text">
+      <h1>Painel do projeto <span>GEIEC</span></h1>
+      <p>Selecione uma projeto para continuar</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-label">Projetos da turma 102</div>
+    <div class="grid">
+      <% equipes.forEach(function(equipe) { %>
+        <a href="<%= equipe.rota %>" class="btn-equipe">
+          <div class="btn-num"><%= String(equipe.numero).padStart(2, '0') %></div>
+          <div class="btn-label"><%= equipe.nome %></div>
+          <span class="btn-arrow">→</span>
+        </a>
+      <% }); %>
+    </div>
+  </main>
+
+  <footer>
+    &copy; <%= new Date().getFullYear() %> &nbsp;·&nbsp; GEIEC
+  </footer>
+
+</body>
+</html>

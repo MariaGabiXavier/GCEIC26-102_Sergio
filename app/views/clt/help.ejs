@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLT+ - Ajuda</title>
+  <link rel="stylesheet" href="/clt.css">
+</head>
+<body>
+  <%- include('nav') %>
+  <main class="page-content">
+    <section class="hero">
+      <h1>Ajuda do CLT+</h1>
+      <p>Veja como preencher a simulação e interpretar os principais números calculados pelo sistema.</p>
+    </section>
+
+    <section class="card" style="margin-bottom:18px">
+      <h2 class="section-title">Como usar</h2>
+      <div class="help-card-list">
+        <div class="help-item">
+          <strong>1. Informe a remuneração</strong>
+          <p class="muted">Preencha o salário bruto e, se quiser analisar retorno, informe a receita gerada.</p>
+        </div>
+        <div class="help-item">
+          <strong>2. Preencha benefícios</strong>
+          <p class="muted">Inclua vale-transporte, refeição, alimentação, saúde, bem-estar e outros benefícios.</p>
+        </div>
+        <div class="help-item">
+          <strong>3. Revise descontos</strong>
+          <p class="muted">Use os campos de desconto quando parte dos benefícios ou outros valores saírem do funcionário.</p>
+        </div>
+        <div class="help-item">
+          <strong>4. Compare o resultado</strong>
+          <p class="muted">Confira salário líquido, custo mensal da empresa e lucro ou prejuízo estimado.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:18px">
+      <h2 class="section-title">O que entra no custo da empresa?</h2>
+      <p class="muted">
+        O cálculo soma salário bruto, FGTS, INSS patronal estimado, RAT/SAT, terceiros,
+        provisão de 13º salário, provisão de férias com um terço e benefícios pagos pela empresa.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Perguntas frequentes</h2>
+      <div class="help-card-list">
+        <div class="help-item">
+          <strong>Salário líquido é igual ao custo da empresa?</strong>
+          <p class="muted">Não. O salário líquido é o que sobra para o funcionário após descontos. O custo da empresa inclui encargos e benefícios.</p>
+        </div>
+        <div class="help-item">
+          <strong>O resultado mostra lucro real?</strong>
+          <p class="muted">Mostra uma estimativa operacional simples: receita gerada menos custo mensal da contratação.</p>
+        </div>
+        <div class="help-item">
+          <strong>Posso usar para folha real?</strong>
+          <p class="muted">Não como documento oficial. O objetivo é acadêmico e gerencial.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
