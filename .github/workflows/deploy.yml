@@ -3,7 +3,18 @@ name: Teste and Deploy
 on:
   push:
     branches: [main, dev]
-
+  
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        type: choice
+        required: true
+        default: 'dev'
+        options:
+          - dev
+          - stage
+          - prod
   
 jobs:
   detect-changes:
@@ -12,6 +23,9 @@ jobs:
       api: ${{ steps.changes.outputs.api }}
       app: ${{ steps.changes.outputs.app }}
     steps:
+      - name: Mostrando o ambiente escolhido
+        run: |
+          echo "O ambiente selecionado foi: ${{ github.event.inputs.environment }}"
       - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v4
         id: changes
