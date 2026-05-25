@@ -35,7 +35,7 @@ const equipes = [
   { numero: 5, nome: 'Equipe-5', rota: '/equipe-5' },
   { numero: 6, nome: 'Equipe-6', rota: '/equipe-6' },
   { numero: 7, nome: 'Equipe-7', rota: '/equipe-7' },
-  { numero: 8, nome: 'Equipe-8', rota: '/equipe-8' },
+  { numero: 8, nome: 'DASN-SIMEI', rota: '/DASN' },
   { numero: 9, nome: 'Equipe-9', rota: '/equipe-9' },
   { numero: 10, nome: 'Equipe-10', rota: '/equipe-10' },
   { numero: 11, nome: 'Equipe-11', rota: '/equipe-11' },
@@ -506,6 +506,44 @@ app.get('/clt/about', requireCltAuth, (req, res) => {
 
 app.get('/clt/help', requireCltAuth, (req, res) => {
   res.render('clt/help', { user: req.session.cltUser });
+});
+
+
+// -- Time_8 DASN-SIMEI --
+function requireAuthDASN(req, res, next) {
+  if (req.session && req.session.dasnUser) return next();
+  res.redirect('/DASN/login');
+}
+
+app.get('/DASN', (req, res) => res.render('Time_8(DASN)/splash'));
+app.get('/DASN/login', (req, res) => res.render('Time_8(DASN)/login', { erro: null }));
+app.post('/DASN/login', (req, res) => {
+  const { usuario, senha } = req.body;
+  if (usuario === 'admin' && senha === '1234') {
+    req.session.dasnUser = { username: usuario };
+    return res.redirect('/DASN/calculo');
+  }
+  res.render('Time_8(DASN)/login', {erro: 'Usuário ou senha inválidos.'});
+});
+app.get('/DASN/calculo', requireAuthDASN, (req, res) => res.render('Time_8(DASN)/calculo'));
+app.get('/DASN/sobre', requireAuthDASN, (req, res) => res.render('Time_8(DASN)/sobre'));
+app.get('/DASN/help', requireAuthDASN, (req, res) => res.render('Time_8(DASN)/help'));
+app.get('/DASN/logout', (req, res) => { req.session.destroy(() => {res.redirect('/DASN/login');});
+});
+
+app.post('/DASN/valida-limite', requireAuthDASN, async (req, res) => {
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch(`${API_URL}/DASN/valida-limite`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(400).json({success: false, error: err.message});
+  }
 });
 
 
