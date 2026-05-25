@@ -1,4 +1,3 @@
-
 function calcularMKM(dv, df, ml) {
   /*2. Calcule o Markup Multiplicador  fórmula para chegar ao Markup Multiplicador (em decimal) é:
             MKM= 100/100 - (DV + DF + ML)

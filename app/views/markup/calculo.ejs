@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora Markup</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #14532d, #166534, #22c55e);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .background-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      animation: float 8s infinite ease-in-out;
+    }
+
+    .circle-1 {
+      width: 300px;
+      height: 300px;
+      top: -100px;
+      left: -80px;
+    }
+
+    .circle-2 {
+      width: 220px;
+      height: 220px;
+      bottom: -70px;
+      right: -50px;
+      animation-delay: 2s;
+    }
+
+    .circle-3 {
+      width: 140px;
+      height: 140px;
+      top: 15%;
+      right: 15%;
+      animation-delay: 4s;
+    }
+
+    .navbar {
+      width: 100%;
+      height: 75px;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    .navbar .user-info {
+      font-size: 1rem;
+      color: white;
+      letter-spacing: 0.5px;
+    }
+
+    .navbar .user-info strong {
+      color: #bbf7d0;
+    }
+
+    .navbar .logout-link {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .navbar .logout-link:hover {
+      color: #bbf7d0;
+    }
+
+    .navbar .logout-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      background: #bbf7d0;
+      transition: 0.3s;
+    }
+
+    .navbar .logout-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: #bbf7d0;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 2px;
+      background: #bbf7d0;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      min-width: 220px;
+      padding: 8px 0;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      z-index: 1001;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: 0.3s;
+      text-align: left;
+    }
+
+    .dropdown-content a::after {
+      display: none;
+    }
+
+    .dropdown-content a:hover {
+      background: rgba(255,255,255,0.1);
+      color: #bbf7d0;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown .nav-link {
+      cursor: pointer;
+    }
+
+    .calc-container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      padding: 25px 35px;
+      border-radius: 24px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+      animation: fadeIn 0.5s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 12px;
+      background: linear-gradient(135deg, #166534, #22c55e);
+      color: white;
+      font-size: 2.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 22px;
+      box-shadow: 0 8px 20px rgba(34,197,94,0.35);
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #111827;
+    }
+
+    h1 span {
+      color: #166534;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      flex: 1;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      outline: none;
+      transition: 0.3s;
+      font-size: 0.95rem;
+      background: white;
+      color: #111827;
+    }
+
+    .form-group input::placeholder {
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    .form-group input:focus {
+      border-color: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
+    }
+
+    .btn-calcular {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, #166534, #22c55e);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 4px;
+    }
+
+    .btn-calcular:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .btn-calcular:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .result-area {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      min-height: 55px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s;
+    }
+
+    .result-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .result-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #166534;
+    }
+
+    .result-detail {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .result-error {
+      color: #b91c1c;
+      font-size: 0.85rem;
+    }
+
+    .version {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(20px); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="background-circle circle-1"></div>
+  <div class="background-circle circle-2"></div>
+  <div class="background-circle circle-3"></div>
+
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="/markup/sobre">Sobre</a></li>
+      <li><a href="/markup/help">Help</a></li>
+      <li class="dropdown">
+        <a class="nav-link">Calcular ▾</a>
+        <div class="dropdown-content">
+          <a href="/markup/preco-venda">Calcular Preço de Venda</a>
+          <a href="/markup/desconto">Calcular Desconto</a>
+          <a href="/markup/markup-multiplicador">Calcular Markup Multiplicador</a>
+        </div>
+      </li>
+    </ul>
+    <div class="user-info">
+      Olá, <strong><%= user.nome %></strong>
+    </div>
+    <a href="/markup/logout" class="logout-link">Sair</a>
+  </nav>
+
+  <div class="calc-container">
+
+    <div class="icon">
+      📊
+    </div>
+
+    <h1 style="text-align: center;">Markup <span>Calc</span></h1>
+    <p class="subtitle" style="text-align: center;">
+      Preencha os dados para calcular o preço de venda.
+    </p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="custo">Custo (R$)</label>
+        <input type="number" id="custo" placeholder="Ex: 100,00" step="any" />
+      </div>
+      <div class="form-group">
+        <label for="dv">DV (%)</label>
+        <input type="number" id="dv" placeholder="Ex: 10" step="any" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="df">DF (%)</label>
+        <input type="number" id="df" placeholder="Ex: 15" step="any" />
+      </div>
+      <div class="form-group">
+        <label for="ml">ML (%)</label>
+        <input type="number" id="ml" placeholder="Ex: 20" step="any" />
+      </div>
+    </div>
+
+    <button class="btn-calcular" id="btnCalcular" onclick="calcular()">
+      Calcular
+    </button>
+
+    <div class="result-area" id="resultArea">
+      <div class="result-label">Resultado</div>
+      <div class="result-value" id="resultValue">—</div>
+      <div class="result-detail" id="resultDetail"></div>
+    </div>
+
+    <div class="version">
+      versão 1.0
+    </div>
+
+  </div>
+
+  <script>
+    async function calcular() {
+      const btn = document.getElementById('btnCalcular');
+      const custoVal = document.getElementById('custo').value;
+      const dvVal = document.getElementById('dv').value;
+      const dfVal = document.getElementById('df').value;
+      const mlVal = document.getElementById('ml').value;
+
+      const custo = parseFloat(custoVal);
+      const dv = parseFloat(dvVal);
+      const df = parseFloat(dfVal);
+      const ml = parseFloat(mlVal);
+
+      if (!custoVal || !dvVal || !dfVal || !mlVal || isNaN(custo) || isNaN(dv) || isNaN(df) || isNaN(ml)) {
+        document.getElementById('resultValue').textContent = '⚠️';
+        document.getElementById('resultDetail').textContent = 'Preencha todos os campos com valores válidos.';
+        document.getElementById('resultDetail').className = 'result-detail result-error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Calculando...';
+
+      document.getElementById('resultValue').textContent = '⏳';
+      document.getElementById('resultDetail').textContent = 'Aguarde...';
+      document.getElementById('resultDetail').className = 'result-detail';
+
+      try {
+        const res = await fetch('/markup/calcularPrecoVenda', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ preco: custo, dv, df, ml }),
+        });
+
+        const json = await res.json();
+
+        if (!json.success) {
+          document.getElementById('resultValue').textContent = '❌';
+          document.getElementById('resultDetail').textContent = 'Erro: ' + (json.error || 'Falha na requisição');
+          document.getElementById('resultDetail').className = 'result-detail result-error';
+          return;
+        }
+
+        const data = json.data;
+        const valorFormatado = (typeof data === 'number')
+          ? 'R$ ' + data.toFixed(2).replace('.', ',')
+          : String(data);
+
+        document.getElementById('resultValue').textContent ='R$ ' + valorFormatado;
+        document.getElementById('resultDetail').textContent =
+          'Preço: R$ ' + custo.toFixed(2) + ' | DV: ' + dv + '% | DF: ' + df + '% | ML: ' + ml + '%';
+        document.getElementById('resultDetail').className = 'result-detail';
+      } catch (e) {
+        document.getElementById('resultValue').textContent = '❌';
+        document.getElementById('resultDetail').textContent = 'Erro ao comunicar com o servidor: ' + e.message;
+        document.getElementById('resultDetail').className = 'result-detail result-error';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Calcular';
+      }
+    }
+  </script>
+
+</body>
+</html>
