@@ -7,8 +7,8 @@ const {
 } = require('./cltFuncoes');
 
 const router = express.Router();
-const VALID_USER = 'adm';
-const VALID_PASS = 'adm';
+const VALID_USER = 'admin';
+const VALID_PASS = 'admin';
 const STATIC_TOKEN = 'token-clt-empresarial-123';
 
 function validarToken(req, res, next) {

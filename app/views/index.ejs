@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* ── DARK (padrão) ── */
     :root {
       --bg: #0a0a0f;
       --surface: #12121a;
@@ -16,9 +17,37 @@
       --accent3: #aaff00;
       --text: #e8e8f0;
       --muted: #555570;
+      --grid-line: rgba(255,60,95,0.04);
+      --hover-border: #2e2e4a;
+      --shadow: rgba(0,0,0,0.4);
+      --toggle-bg: #1e1e2e;
+      --toggle-knob: #e8e8f0;
+      --toggle-icon-dark: 1;
+      --toggle-icon-light: 0;
+    }
+
+    /* ── LIGHT ── */
+    html.light {
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --border: #ddddd8;
+      --accent: #e0002d;
+      --accent2: #007aaa;
+      --accent3: #4a8c00;
+      --text: #111118;
+      --muted: #888890;
+      --grid-line: rgba(0,0,0,0.04);
+      --hover-border: #bbbbcc;
+      --shadow: rgba(0,0,0,0.12);
+      --toggle-bg: #ddddd8;
+      --toggle-knob: #111118;
+      --toggle-icon-dark: 0;
+      --toggle-icon-light: 1;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { transition: background-color 0.3s, color 0.3s; }
 
     body {
       background-color: var(--bg);
@@ -26,21 +55,72 @@
       font-family: 'Space Mono', monospace;
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    /* Background grid */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(255,60,95,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,60,95,0.04) 1px, transparent 1px);
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
       z-index: 0;
     }
 
+    /* ── TOGGLE ── */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    .toggle-track {
+      width: 48px;
+      height: 26px;
+      background: var(--toggle-bg);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      position: relative;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--toggle-knob);
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1), background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    html.light .toggle-knob {
+      transform: translateX(22px);
+    }
+
+    /* ── HEADER ── */
     header {
       position: relative;
       z-index: 1;
@@ -49,6 +129,7 @@
       display: flex;
       align-items: flex-end;
       gap: 20px;
+      transition: border-color 0.3s;
     }
 
     .header-number {
@@ -70,9 +151,7 @@
       line-height: 1;
     }
 
-    .header-text h1 span {
-      color: var(--accent);
-    }
+    .header-text h1 span { color: var(--accent); }
 
     .header-text p {
       margin-top: 8px;
@@ -82,6 +161,7 @@
       text-transform: uppercase;
     }
 
+    /* ── MAIN ── */
     main {
       position: relative;
       z-index: 1;
@@ -125,7 +205,7 @@
       color: var(--text);
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
       min-height: 110px;
@@ -158,11 +238,10 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Color accent bar per row group */
-    .btn-equipe:nth-child(-n+5)::before   { background: var(--accent); }
+    .btn-equipe:nth-child(-n+5)::before          { background: var(--accent); }
     .btn-equipe:nth-child(n+6):nth-child(-n+10)::before  { background: var(--accent2); }
     .btn-equipe:nth-child(n+11):nth-child(-n+15)::before { background: var(--accent3); }
-    .btn-equipe:nth-child(n+16)::before   { background: #c77dff; }
+    .btn-equipe:nth-child(n+16)::before          { background: #c77dff; }
 
     .btn-equipe::before {
       content: '';
@@ -174,14 +253,12 @@
     }
 
     .btn-equipe:hover {
-      border-color: #2e2e4a;
+      border-color: var(--hover-border);
       transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      box-shadow: 0 12px 30px var(--shadow);
     }
 
-    .btn-equipe:hover::before {
-      width: 6px;
-    }
+    .btn-equipe:hover::before { width: 6px; }
 
     .btn-num {
       font-family: 'Syne', sans-serif;
@@ -190,12 +267,10 @@
       color: transparent;
       -webkit-text-stroke: 1px var(--muted);
       line-height: 1;
-      transition: color 0.2s;
+      transition: -webkit-text-stroke-color 0.2s;
     }
 
-    .btn-equipe:hover .btn-num {
-      -webkit-text-stroke: 1px var(--text);
-    }
+    .btn-equipe:hover .btn-num { -webkit-text-stroke-color: var(--text); }
 
     .btn-label {
       font-size: 11px;
@@ -205,9 +280,7 @@
       transition: color 0.2s;
     }
 
-    .btn-equipe:hover .btn-label {
-      color: var(--text);
-    }
+    .btn-equipe:hover .btn-label { color: var(--text); }
 
     .btn-arrow {
       position: absolute;
@@ -220,10 +293,7 @@
       color: var(--text);
     }
 
-    .btn-equipe:hover .btn-arrow {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
+    .btn-equipe:hover .btn-arrow { opacity: 1; transform: translate(0, 0); }
 
     footer {
       position: relative;
@@ -234,11 +304,18 @@
       font-size: 11px;
       letter-spacing: 2px;
       border-top: 1px solid var(--border);
+      transition: border-color 0.3s;
     }
   </style>
 </head>
 <body>
-
+ <!-- Toggle dark/light -->
+  <div class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+    <span class="toggle-label" id="toggle-label">Dark</span>
+    <div class="toggle-track">
+      <div class="toggle-knob" id="toggle-knob">☽</div>
+    </div>
+  </div>
   <header>
     <div class="header-number">20</div>
     <div class="header-text">
@@ -263,6 +340,26 @@
   <footer>
     &copy; <%= new Date().getFullYear() %> &nbsp;·&nbsp; GEIEC
   </footer>
+ <script>
+    const STORAGE_KEY = 'equipes-theme';
 
+    function applyTheme(theme) {
+      const isLight = theme === 'light';
+      document.documentElement.classList.toggle('light', isLight);
+      document.getElementById('toggle-label').textContent = isLight ? 'Light' : 'Dark';
+      document.getElementById('toggle-knob').textContent  = isLight ? '☀' : '☽';
+    }
+
+    function toggleTheme() {
+      const isLight = document.documentElement.classList.contains('light');
+      const next = isLight ? 'dark' : 'light';
+      localStorage.setItem(STORAGE_KEY, next);
+      applyTheme(next);
+    }
+
+    // Restore saved preference on load
+    const saved = localStorage.getItem(STORAGE_KEY) || 'dark';
+    applyTheme(saved);
+  </script>
 </body>
 </html>

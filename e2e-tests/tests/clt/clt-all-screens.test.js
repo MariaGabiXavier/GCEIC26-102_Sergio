@@ -41,8 +41,8 @@ async function autenticarClt() {
   await driver.get(BASE_URL + '/clt/login');
   const url = await driver.getCurrentUrl();
   if (url.includes('/clt/dashboard')) return;
-  await driver.findElement(By.id('username')).sendKeys('adm');
-  await driver.findElement(By.id('password')).sendKeys('adm');
+  await driver.findElement(By.id('username')).sendKeys('admin');
+  await driver.findElement(By.id('password')).sendKeys('admin');
   await driver.findElement(By.css('button[type="submit"]')).click();
   await driver.wait(until.urlContains('/clt/dashboard'), 5000);
 }
@@ -81,8 +81,8 @@ async function testeLogin() {
     erro.toLowerCase().includes('inválidos') ? ok('Credenciais inválidas exibidas') : fail(`Mensagem inesperada: ${erro}`);
 
     await driver.get(BASE_URL + '/clt/login');
-    await driver.findElement(By.id('username')).sendKeys('adm');
-    await driver.findElement(By.id('password')).sendKeys('adm');
+    await driver.findElement(By.id('username')).sendKeys('admin');
+    await driver.findElement(By.id('password')).sendKeys('admin');
     await foto('02-login-campos-preenchidos');
     await driver.findElement(By.css('button[type="submit"]')).click();
     await driver.wait(until.urlContains('/clt/dashboard'), 5000);
