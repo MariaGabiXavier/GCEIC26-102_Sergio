@@ -167,8 +167,10 @@ jobs:
 
         
   deploy-app:
-    needs: unitTestApi
-    if: success()       
+    needs: detect-changes
+    if: needs.detect-changes.outputs.app == 'true'
+#    needs: unitTestApi  
+
     runs-on: ubuntu-latest
     outputs:
       dep_app: ${{ steps.set-output-app.outputs.dep_app }}

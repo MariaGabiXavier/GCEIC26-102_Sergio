@@ -1,16 +1,20 @@
-const { Builder, By, until, Key } = require("selenium-webdriver");
+const { Builder, By } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 const fs = require("fs");
 const path = require("path");
 const runExgTests = require("./exg/exg-all-screens.test.js");
 const runCddTests = require("./cdd/cdd-all-screens.test.js");
+const runCltTests = require("./clt/clt-all-screens.test.js");
+const runFinanceTests = require("./financecar/financecar-all-screens.test.js");
 
 const BASE_URL = process.env.APP_URL || "http://localhost:3000";
 const SCREENSHOTS_DIR = path.join(__dirname, "..", "screenshots");
 
-// Garante que o diretório de screenshots existe
-if (!fs.existsSync(SCREENSHOTS_DIR))
+if (!fs.existsSync(SCREENSHOTS_DIR)) {
   fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
+}
+
+let driver;
 
 async function tiraFoto(name) {
   try {
@@ -42,31 +46,36 @@ async function main() {
     console.log(BASE_URL);
     await driver.get(BASE_URL + "/login");
 
-    tiraFoto("Pagina Entrada");
-    //preenche os campos
+    await tiraFoto("Pagina Entrada");
 
     await driver.findElement(By.id("username")).sendKeys("Adm");
     await driver.findElement(By.id("password")).sendKeys("admin");
 
-    tiraFoto("Valores Digitados");
-    // vamos acionar o botao de login e ver o que acontece
+    await tiraFoto("Valores Digitados");
     await driver.findElement(By.id("loginForm")).submit();
     await new Promise((r) => setTimeout(r, 800));
 
-    tiraFoto("Submit form com erro");
+    await tiraFoto("Submit form com erro");
 
     const errMsg = await driver.findElement(By.css(".erro")).getText();
-    if (!errMsg.includes("inválidos") && !errMsg.includes("invalidos"))
+    if (!errMsg.includes("invalidos") && !errMsg.includes("inválidos")) {
       throw new Error(`Falhou : ${errMsg}`);
-
-    console.log("\n--- Iniciando testes do EXG ---");
-    await runExgTests();
-
-    console.log("\n--- Iniciando testes do CDD ---");
-    await runCddTests();
+    }
   } finally {
     if (driver) await driver.quit();
   }
+
+  console.log("\n--- Iniciando testes do EXG ---");
+  await runExgTests();
+
+  console.log("\n--- Iniciando testes do CDD ---");
+  await runCddTests();
+
+  console.log("\n--- Iniciando testes do CLT+ ---");
+  await runCltTests();
+
+  console.log("\n--- Iniciando testes do FinanceCar ---");
+  await runFinanceTests();
 }
 
 main().catch((err) => {

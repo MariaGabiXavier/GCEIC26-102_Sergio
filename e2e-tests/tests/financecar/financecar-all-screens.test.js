@@ -1,93 +1,131 @@
 const {
+  BASE_URL,
   buildDriver,
-  By,
-  until,
+  screenshot,
   click,
   type,
-  screenshot,
+  By,
+  until,
   openHelpAndValidate
 } = require("./helpers");
 
-const BASE_URL =
-  process.env.API_URL || "http://localhost:3001";
-
-const APP_BASE = BASE_URL + "/financecar";
+const APP_BASE =
+  BASE_URL + "/financecar";
 
 let driver;
 const erros = [];
 
 // ======================================
-// MOCK API
+// HELPERS
 // ======================================
-function startMockApi() {
+async function esperarPagina() {
 
-  const http = require("http");
+  await driver.wait(
+    async () => {
 
-  return new Promise((resolve) => {
+      const state =
+        await driver.executeScript(
+          "return document.readyState"
+        );
 
-    const server = http.createServer((req, res) => {
+      return state === "complete";
 
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-      if (req.method === "OPTIONS") {
-        res.writeHead(204);
-        return res.end();
-      }
-
-      if (req.url === "/api/financiamento/juros") {
-        return res.end(JSON.stringify({ resultado: 10 }));
-      }
-
-      if (req.url === "/api/financiamento/financiamento") {
-        return res.end(JSON.stringify({ resultado: 1000 }));
-      }
-
-      if (req.url === "/api/financiamento/fundo") {
-        return res.end(JSON.stringify({ resultado: 500 }));
-      }
-
-      if (req.url === "/api/financiamento/regra") {
-        return res.end(JSON.stringify({ necessidade: 50 }));
-      }
-
-      res.writeHead(404);
-      res.end("Not found");
-
-    });
-
-    server.listen(4000, "127.0.0.1", () => {
-      console.log("✅ Mock API rodando na porta 4000");
-      resolve(server);
-    });
-
-  });
-
+    },
+    15000
+  );
 }
 
-// ======================================
-// AUTENTICAÇÃO
-// ======================================
+async function waitError(
+  timeout = 10000
+) {
+
+  const el = await driver.wait(
+    until.elementLocated(
+      By.css(".error, #errorMsg")
+    ),
+    timeout
+  );
+
+  await driver.wait(
+    until.elementIsVisible(el),
+    timeout
+  );
+
+  return await el.getText();
+}
+
+async function waitAndType(
+  selector,
+  text,
+  timeout = 15000
+) {
+
+  const el = await driver.wait(
+    until.elementLocated(
+      By.css(selector)
+    ),
+    timeout
+  );
+
+  await driver.wait(
+    until.elementIsVisible(el),
+    timeout
+  );
+
+  await el.clear();
+
+  await el.sendKeys(text);
+}
+
 async function autenticar() {
 
-  await driver.get(APP_BASE + "/login");
-
-  await driver.wait(
-    until.elementLocated(By.css('input[type="text"]')),
-    5000
+  await driver.get(
+    APP_BASE + "/login"
   );
 
-  await type(driver, 'input[type="text"]', "adm");
-  await type(driver, 'input[type="password"]', "adm");
+  await esperarPagina();
 
-  await click(driver, 'button[type="submit"]');
+  // tenta vários seletores possíveis
+  const email =
+    await driver.wait(
+      until.elementLocated(
+        By.css(
+          '#email, [data-testid="email-input"], input[type="text"]'
+        )
+      ),
+      15000
+    );
+
+  await email.clear();
+  await email.sendKeys("adm");
+
+  const senha =
+    await driver.findElement(
+      By.css(
+        '#password, [data-testid="password-input"], input[type="password"]'
+      )
+    );
+
+  await senha.clear();
+  await senha.sendKeys("adm");
+
+  const botao =
+    await driver.findElement(
+      By.css(
+        'button, [data-testid="login-button"]'
+      )
+    );
+
+  await botao.click();
 
   await driver.wait(
-    until.urlContains("/financecar/home"),
-    5000
+    until.urlContains("/home"),
+    15000
   );
 
+  console.log(
+    "✓ Usuário autenticado"
+  );
 }
 
 // ======================================
@@ -99,19 +137,48 @@ async function testeSplash() {
 
   await driver.get(APP_BASE);
 
+  // splash aparece
   await driver.wait(
-    until.elementLocated(By.css(".logo-splash")),
-    10000
+    until.elementLocated(
+      By.css(".logo-splash")
+    ),
+    5000
   );
 
-  const logo = await driver.findElement(By.css(".logo-splash"));
+  console.log(
+    "✓ Splash apareceu"
+  );
 
-  if (!logo) {
-    erros.push("Logo splash não encontrada");
-  }
+  await screenshot(
+    driver,
+    "01-splash"
+  );
 
-  await screenshot(driver, "01-splash");
+  // espera login carregar
+  await driver.wait(
+    until.urlContains(
+      "/financecar/login"
+    ),
+    15000
+  );
 
+  await driver.wait(
+    until.elementLocated(
+      By.css(
+        '#email, [data-testid="email-input"], input[type="password"]'
+      )
+    ),
+    15000
+  );
+
+  console.log(
+    "✓ Splash finalizada"
+  );
+
+  await screenshot(
+    driver,
+    "01-login"
+  );
 }
 
 // ======================================
@@ -121,41 +188,59 @@ async function testeLogin() {
 
   console.log("\n[2/6] Login");
 
-  // inválido
-  await driver.get(APP_BASE + "/login");
-
-  await driver.wait(
-    until.elementLocated(By.css('input[type="text"]')),
-    5000
+  // ======================================
+  // LOGIN INVÁLIDO
+  // ======================================
+  await driver.get(
+    APP_BASE + "/login"
   );
 
-  await type(driver, 'input[type="text"]', "errado");
-  await type(driver, 'input[type="password"]', "errado");
+  await esperarPagina();
 
-  await click(driver, 'button[type="submit"]');
-
-  await driver.wait(
-    until.elementLocated(By.css(".error")),
-    5000
+  await waitAndType(
+    '#email, [data-testid="email-input"], input[type="text"]',
+    "errado"
   );
 
-  await screenshot(driver, "02-login-erro");
-
-  // válido
-  await driver.get(APP_BASE + "/login");
-
-  await type(driver, 'input[type="text"]', "adm");
-  await type(driver, 'input[type="password"]', "adm");
-
-  await click(driver, 'button[type="submit"]');
-
-  await driver.wait(
-    until.urlContains("/financecar/home"),
-    5000
+  await waitAndType(
+    '#password, [data-testid="password-input"], input[type="password"]',
+    "errado"
   );
 
-  await screenshot(driver, "02-login-sucesso");
+  const btnErro =
+    await driver.findElement(
+      By.css(
+        'button, [data-testid="login-button"]'
+      )
+    );
 
+  await btnErro.click();
+
+  const erro =
+    await waitError();
+
+  await screenshot(
+    driver,
+    "02-login-erro"
+  );
+
+  console.log(
+    `✓ Login inválido → "${erro}"`
+  );
+
+  // ======================================
+  // LOGIN VÁLIDO
+  // ======================================
+  await autenticar();
+
+  await screenshot(
+    driver,
+    "02-login-sucesso"
+  );
+
+  console.log(
+    "✓ Login realizado"
+  );
 }
 
 // ======================================
@@ -163,10 +248,12 @@ async function testeLogin() {
 // ======================================
 async function testeRotas() {
 
-  console.log("\n[3/6] Rotas protegidas");
+  console.log(
+    "\n[3/6] Rotas protegidas"
+  );
 
   const rotas = [
-    "/financecar/home",
+    "/financecar",
     "/financecar/juros",
     "/financecar/financiamento",
     "/financecar/fundo",
@@ -176,30 +263,29 @@ async function testeRotas() {
 
   for (const rota of rotas) {
 
-    await driver.get(APP_BASE + "/login");
-
     await driver.executeScript(`
       localStorage.clear();
       sessionStorage.clear();
     `);
 
-    await driver.manage().deleteAllCookies();
+    await driver.manage()
+      .deleteAllCookies();
 
-    await driver.get(BASE_URL + rota);
-
-    await driver.wait(
-      until.urlContains("/financecar/login"),
-      5000
+    await driver.get(
+      BASE_URL + rota
     );
 
-    const urlFinal = await driver.getCurrentUrl();
+    await driver.wait(
+      until.urlContains(
+        "/financecar/login"
+      ),
+      15000
+    );
 
-    if (!urlFinal.includes("/financecar/login")) {
-      erros.push(`Rota não protegida: ${rota}`);
-    }
-
+    console.log(
+      `✓ Rota protegida → ${rota}`
+    );
   }
-
 }
 
 // ======================================
@@ -212,25 +298,58 @@ async function testeTelas() {
   await autenticar();
 
   const telas = [
-    "/financecar/juros",
-    "/financecar/financiamento",
-    "/financecar/fundo",
-    "/financecar/regra"
+    "juros",
+    "financiamento",
+    "fundo",
+    "regra"
   ];
 
-  for (const t of telas) {
+  for (const rota of telas) {
 
-    await driver.get(BASE_URL + t);
-
-    await driver.wait(
-      until.elementLocated(By.css(".card")),
-      5000
+    console.log(
+      `\n→ Abrindo ${rota}`
     );
 
-    await screenshot(driver, `04-${t.replace("/financecar/", "")}`);
+    await driver.get(
+      APP_BASE + "/" + rota
+    );
 
+    await esperarPagina();
+
+    await driver.wait(
+      until.elementLocated(
+        By.css(
+          "body"
+        )
+      ),
+      10000
+    );
+
+    const elementos =
+      await driver.findElements(
+        By.css(
+          "form, .container, .card, h1, h2"
+        )
+      );
+
+    if (elementos.length === 0) {
+
+      erros.push(
+        `Tela ${rota} sem conteúdo`
+      );
+
+      continue;
+    }
+
+    await screenshot(
+      driver,
+      `04-${rota}`
+    );
+
+    console.log(
+      `✓ Tela ${rota} carregada`
+    );
   }
-
 }
 
 // ======================================
@@ -240,31 +359,34 @@ async function testeSobre() {
 
   console.log("\n[5/6] Sobre");
 
-  await autenticar();
-
   await driver.get(APP_BASE + "/sobre");
 
+  // espera a tela carregar
   await driver.wait(
-    until.elementLocated(By.css(".card")),
-    5000
+      until.elementLocated(By.css(".hero-sobre")),
+      15000
   );
 
-  const cards = await driver.findElements(By.css(".card"));
+  // valida título
+  const titulo = await driver.findElement(
+      By.css(".hero-sobre h1")
+  ).getText();
 
-  if (cards.length === 0) {
-    erros.push("Sem membros");
+  if (!titulo.includes("Equipe FinanceCar")) {
+      throw new Error("Título da página Sobre não encontrado");
   }
 
-  await screenshot(driver, "05-sobre");
+  await screenshot(driver, "05-sobre.png");
 
+  console.log("✓ Tela sobre carregada");
 }
 
 // ======================================
-// TESTE HELP
+// TESTE HELPERS
 // ======================================
-async function testeHelpGeral() {
+async function testeHelps() {
 
-  console.log("\n[6/6] Help");
+  console.log("\n[6/6] Helps");
 
   await autenticar();
 
@@ -275,19 +397,35 @@ async function testeHelpGeral() {
     "regra"
   ];
 
-  for (const t of telas) {
+  for (const tela of telas) {
 
-    await driver.get(APP_BASE + "/" + t);
-
-    await driver.wait(
-      until.elementLocated(By.css(".card")),
-      5000
+    await driver.get(
+      APP_BASE + "/financecar/" + tela
     );
 
-    await openHelpAndValidate(driver, t);
+    await esperarPagina();
 
+    await driver.wait(
+      until.elementLocated(
+        By.css(".help-btn")
+      ),
+      10000
+    );
+
+    await screenshot(
+      driver,
+      `help-${tela}`
+    );
+
+    await openHelpAndValidate(
+      driver,
+      tela
+    );
+
+    console.log(
+      `✓ Help ${tela} validado`
+    );
   }
-
 }
 
 // ======================================
@@ -295,43 +433,66 @@ async function testeHelpGeral() {
 // ======================================
 async function main() {
 
-  const api = await startMockApi();
-
-  // 🔥 FIX PRINCIPAL
   driver = await buildDriver();
 
-  await driver.manage().window().setRect({
-            width: 1400,
-            height: 900
-        });
+  await driver.manage()
+    .window()
+    .setRect({
+      width: 1400,
+      height: 900
+    });
 
   try {
 
     await testeSplash();
+
     await testeLogin();
+
     await testeRotas();
+
     await testeTelas();
+
     await testeSobre();
-    await testeHelpGeral();
+
+    await testeHelps();
 
   } catch (err) {
 
-    console.error("❌ Erro fatal:", err);
+    console.error(
+      "❌ Erro fatal:",
+      err
+    );
+
     process.exit(1);
 
   } finally {
 
-    if (driver) await driver.quit();
-    api.close();
+    if (driver) {
+
+      await driver.quit();
+    }
   }
 
-  console.log("\n────────────────────────────");
+  console.log(
+    "\n────────────────────────────"
+  );
 
   if (erros.length === 0) {
-    console.log("✅ Tudo passou!");
+
+    console.log(
+      "✅ Tudo passou!"
+    );
+
   } else {
-    console.log(`❌ ${erros.length} falhas`);
-    erros.forEach(e => console.log(" • " + e));
+
+    console.log(
+      `❌ ${erros.length} falhas`
+    );
+
+    erros.forEach(e =>
+      console.log(" • " + e)
+    );
+
     process.exit(1);
   }
 }

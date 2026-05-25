@@ -77,22 +77,50 @@ async function screenshot(driver, name) {
 
 // help modal
 async function openHelpAndValidate(driver, pageName) {
+
   await click(driver, ".help-btn");
-  await driver.sleep(500);
 
-  const overlayExists = await exists(driver, ".overlay");
+  // espera overlay ficar visível
+  const overlay = await driver.wait(
+    until.elementLocated(By.css(".overlay")),
+    10000
+  );
 
-  if (!overlayExists) {
-    throw new Error(`Help NÃO abriu em ${pageName}`);
-  }
+  await driver.wait(
+    until.elementIsVisible(overlay),
+    10000
+  );
 
-  await screenshot(driver, `help-${pageName}`);
+  // valida modal também
+  const modal = await driver.findElement(
+    By.css(".modal")
+  );
+
+  await driver.wait(
+    until.elementIsVisible(modal),
+    10000
+  );
+
+  await screenshot(
+    driver,
+    `help-${pageName}`
+  );
+
   return true;
 }
 
 async function closeHelp(driver) {
-  const overlay = await driver.findElement(By.css(".overlay"));
+
+  const overlay = await driver.findElement(
+    By.css(".overlay")
+  );
+
   await overlay.click();
+
+  await driver.wait(
+    until.elementIsNotVisible(overlay),
+    10000
+  );
 }
 
 // autenticação (corrigida e reutilizável)

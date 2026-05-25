@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLT+ - Sobre</title>
+  <link rel="stylesheet" href="/clt.css">
+</head>
+<body>
+  <%- include('nav') %>
+  <main class="page-content">
+    <section class="hero">
+      <h1>Sobre o CLT+</h1>
+      <p>
+        Projeto acadêmico para simular salário líquido, encargos, benefícios e impacto financeiro
+        de uma contratação CLT para empresas.
+      </p>
+    </section>
+
+    <section class="card" style="margin-bottom:18px">
+      <h2 class="section-title">Equipe</h2>
+      <div class="team-showcase">
+      <div class="photo-box team-photo-box">
+        <img
+          src="/teamCLT.jpg"
+          alt="Foto da equipe CLT+"
+          class="team-photo"
+          style="display:none"
+          onload="this.style.display='block';document.getElementById('teamPhotoPlaceholder').style.display='none'"
+        >
+        <div id="teamPhotoPlaceholder">
+          <strong>Foto da equipe</strong>
+          <p class="muted">Quando tiverem a foto, coloquem o arquivo como <code>app/public/teamCLT.jpg</code>.</p>
+        </div>
+      </div>
+      <div class="team-list">
+        <div class="team-member">
+          <strong>Geovana da Silva Barbosa</strong>
+          <span class="ra">RA 24015889</span>
+          <p class="muted">API de salário líquido</p>
+        </div>
+        <div class="team-member">
+          <strong>Sofia de Abreu Guimarães</strong>
+          <span class="ra">RA 24013553</span>
+          <p class="muted">API de lucro/prejuízo</p>
+        </div>
+        <div class="team-member">
+          <strong>Mariana Costa Gonçalves da Silva</strong>
+          <span class="ra">RA 24018699</span>
+          <p class="muted">API de custo empresarial</p>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="metric-grid">
+      <article class="card metric">
+        <div class="metric-label">Disciplina</div>
+        <div class="metric-value" style="font-size:20px">GCEIC</div>
+        <p class="muted">Gerência de Configuração, Entrega e Integração Contínua.</p>
+      </article>
+      <article class="card metric">
+        <div class="metric-label">Tecnologias</div>
+        <div class="metric-value" style="font-size:20px">Node + EJS</div>
+        <p class="muted">API Express, app web Express/EJS, Jest, Supertest e CI/CD.</p>
+      </article>
+      <article class="card metric">
+        <div class="metric-label">Aviso</div>
+        <div class="metric-value" style="font-size:20px">Estimativa</div>
+        <p class="muted">Os cálculos são educacionais e podem variar por regra fiscal ou acordo coletivo.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
