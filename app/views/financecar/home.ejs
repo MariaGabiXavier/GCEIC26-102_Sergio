@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - FinanceCar</title>
+    <link rel="stylesheet" href="/financecar.css">
+</head>
+<body>
+    <div id="root">
+        <div class="home">
+            <%- include('partials/header') %>
+
+            <section class="hero">
+                <div class="hero-texto">
+                    <h1>Bem-vindo(a) ao FinanceCar!</h1>
+                    <h2>Planeje seu financiamento com mais segurança!</h2>
+                    <h2>Simule parcelas, organize seus gastos e tome decisões financeiras mais inteligentes.</h2>
+                </div>
+            </section>
+
+            <div class="label">
+                <h2>Escolha uma ferramenta para começar:</h2>
+            </div>
+
+            <section class="cards-funcionalidades">
+
+                <a href="/financecar/juros" class="card-link">
+                    <div class="card-funcao">
+                        <h2>
+                            <img src="/assets/financecar/grafic.svg" alt="Juros Compostos" class="image" />
+                            Juros Compostos
+                        </h2>
+
+                        <p>
+                            Calcule o crescimento de investimentos e juros ao longo do tempo.
+                        </p>
+                    </div>
+                </a>
+
+                <a href="/financecar/financiamento" class="card-link">
+                    <div class="card-funcao">
+                        <h2>
+                            <img src="/assets/financecar/car.svg" alt="Financiamento" class="image" />
+                            Financiamento
+                        </h2>
+
+                        <p>
+                            Simule parcelas, taxas e valores totais do veículo.
+                        </p>
+                    </div>
+                </a>
+
+                <a href="/financecar/fundo" class="card-link">
+                    <div class="card-funcao">
+                        <h2>
+                            <img src="/assets/financecar/money.svg" alt="Fundo de Emergência" class="image" />
+                            Fundo de Emergência
+                        </h2>
+
+                        <p>
+                            Descubra quanto guardar para imprevistos financeiros.
+                        </p>
+                    </div>
+                </a>
+
+                <a href="/financecar/regra" class="card-link">
+                    <div class="card-funcao">
+                        <h2>
+                            <img src="/assets/financecar/bars.svg" alt="Regra 50/30/20" class="image" />
+                            Regra 50/30/20
+                        </h2>
+
+                        <p>
+                            Organize sua renda de forma equilibrada e saudável.
+                        </p>
+                    </div>
+                </a>
+
+            </section>
+
+            <%- include('partials/logout-popup') %>
+        </div>
+    </div>
+</body>
+</html>

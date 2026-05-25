@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FinanceCar</title>
+    <link rel="stylesheet" href="/financecar.css">
+</head>
+<body>
+    <div id="root">
+    <div id="toast" class="toast" style="display: none;"></div>
+
+    <div class="logo-box">
+        <img src="/assets/financecar/logo.svg" alt="Logo" class="logo-autenticacao" />                
+
+        <form id="loginForm" onsubmit="handleLogin(event)" data-testid="login-form">
+            <div class="container-autenticacao">
+                <div class="card">
+                    <h1>Login</h1>
+
+                    <input type="text" id="email" placeholder="Email" oninput="clearError()" data-testid="email-input"/>
+                    <input type="password" id="password" placeholder="Senha" oninput="clearError()" data-testid="password-input" />
+
+                    <p class="error" id="errorMsg" style="display: none;"></p>
+
+                    <button type="submit" data-testid="login-button">Entrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function clearError() {
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            clearError();
+
+            const username = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!username || !password) {
+                errorMsg.innerText = "Preencha todos os campos";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            try {
+                const response = await fetch("/financecar/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return;
+                }
+
+                errorMsg.innerText = "Usuário ou senha inválidos";
+                errorMsg.style.display = "block";
+
+            } catch (err) {
+                errorMsg.innerText = "Erro ao conectar";
+                errorMsg.style.display = "block";
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>
