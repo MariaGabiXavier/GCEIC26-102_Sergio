@@ -3,11 +3,9 @@ const cors = require("cors");
 const helmet = require("helmet");
 const etec1 = require("./Time_2(ETEC1)/etec1.route");
 const exgRouter = require("./exg/exgApp");
-<<<<<<< HEAD
 const financeRouter = require("./financecar/financeApp")
-=======
-const cltRouter = require("./clt/cltApp");
->>>>>>> 70ce30c69decb2c2440d8a37204148f7d2b60688
+const mkpRouter = require("./mkp/app");
+
 
 const app = express();
 
@@ -58,11 +56,8 @@ app.post("/api/calcular", (req, res) => {
 
 app.use("/ETEC1", etec1);
 app.use("/api/exg", exgRouter);
-<<<<<<< HEAD
 app.use("/api/financecar", financeRouter);
-=======
-app.use("/api/clt", cltRouter);
->>>>>>> 70ce30c69decb2c2440d8a37204148f7d2b60688
+app.use("/MKP", mkpRouter);
 
 // Rotas CD (compilado TS)
 const cdRouter = require("./cdd/routes/dividendRouter").default;
