@@ -45,7 +45,7 @@ const equipes = [
   { numero: 15, nome: 'Equipe-15', rota: '/equipe-15' },
   { numero: 16, nome: 'Equipe-16', rota: '/equipe-16' },
   { numero: 17, nome: 'Equipe-17', rota: '/equipe-17' },
-  { numero: 18, nome: 'Equipe-18', rota: '/equipe-18' },
+  { numero: 18, nome: 'Markup', rota: '/markup' },
   { numero: 19, nome: 'Equipe-19', rota: '/equipe-19' },
   { numero: 20, nome: 'Equipe-20', rota: '/equipe-20' }
 ]
