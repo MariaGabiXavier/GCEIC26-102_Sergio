@@ -2,6 +2,7 @@
 
 Projeto final de GCEIC - turma 102.
 
+<<<<<<< HEAD
 ## Tema CLT+
 
 Calculadora CLT empresarial para estimar:
@@ -67,3 +68,5 @@ npm test
 ## Observacao
 
 Os calculos usam tabelas e percentuais de referencia para fins educacionais. Valores reais podem variar conforme regime tributario, convencao coletiva, CNAE/FAP e politicas de beneficios da empresa.
+=======
+>>>>>>> f8f1fbdba9b985c8cf6201b6be4622e7c7c80112

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regra 50/30/20 - FinanceCar</title>
+    <link rel="stylesheet" href="/financecar.css">
+</head>
+<body>
+    <div id="root">
+    <div class="regra">
+        <%- include('partials/header') %>
+
+        <div class="help-container">
+            <button class="help-btn" onclick="document.getElementById('helpOverlay').style.display = 'flex'">
+                <img src="/assets/financecar/help.svg" alt="Ajuda" class="help" />
+            </button>
+        </div>
+
+        <h1>Regra 50/30/20</h1>
+
+        <section class="calculo-regra">
+            <div class="card-regra">
+
+                <input
+                    type="number"
+                    id="salarioLiquido"
+                    placeholder="Renda Mensal Líquida"
+                    oninput="clearError()"
+                />
+
+                <p class="error" id="errorMsg" style="display: none;"></p>
+
+                <button onclick="calcular()" id="btn-calcular">Calcular</button>
+
+                <div id="resultadoMsg" style="display: none; margin-top: 20px; text-align: left;">
+                    <h2>Resultado:</h2>
+
+                    <p style="margin: 10px 0;">
+                        <strong>Necessidades (50%):</strong>
+                        R$ <span id="resNecessidades"></span>
+                    </p>
+
+                    <p style="margin: 10px 0;">
+                        <strong>Desejos (30%):</strong>
+                        R$ <span id="resDesejos"></span>
+                    </p>
+
+                    <p style="margin: 10px 0;">
+                        <strong>Investimentos e Dívidas (20%):</strong>
+                        R$ <span id="resInvestimentos"></span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="overlay" id="helpOverlay" style="display: none;" onclick="this.style.display='none'">
+            <div class="modal" onclick="event.stopPropagation()">
+
+                <div class="icon">
+                    <img src="/assets/financecar/bars.svg" alt="Regra 50/30/20" class="bars" />
+                    <h2>Regra 50/30/20</h2>
+                </div>
+
+                <p>
+                    A Regra 50/30/20 é um método simples de orçamento que divide sua renda mensal líquida
+                    em três categorias principais para ajudar a organizar suas finanças.
+                </p>
+
+                <hr />
+
+                <h3>O que significa cada categoria?</h3>
+
+                <p>
+                    <strong>Necessidades (50%):</strong><br />
+                    Gastos essenciais para sua sobrevivência e trabalho.
+                    Exemplo: aluguel, contas de luz, água, mercado, transporte.
+                </p>
+
+                <p>
+                    <strong>Desejos (30%):</strong><br />
+                    Gastos com estilo de vida e coisas que você quer, mas não são essenciais.
+                    Exemplo: lazer, streaming, restaurantes, compras não essenciais.
+                </p>
+
+                <p>
+                    <strong>Investimentos e Dívidas (20%):</strong><br />
+                    Dinheiro destinado a construir seu futuro e pagar dívidas atrasadas.
+                    Exemplo: reserva de emergência, investimentos e quitação de empréstimos.
+                </p>
+
+                <hr />
+
+                <p style="font-weight: bold;" class="icon">
+                    <img src="/assets/financecar/hint.svg" alt="Dica" />
+                    Dica: Use sua renda líquida (após impostos) para um cálculo realista!
+                </p>
+
+                <button onclick="document.getElementById('helpOverlay').style.display='none'">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <%- include('partials/logout-popup') %>
+    </div>
+
+    <script>
+        function clearError() {
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('resultadoMsg').style.display = 'none';
+        }
+
+        async function calcular() {
+            const salarioLiquido =
+                document.getElementById('salarioLiquido').value;
+
+            const errorMsg = document.getElementById('errorMsg');
+            const resultadoMsg = document.getElementById('resultadoMsg');
+
+            if (!salarioLiquido) {
+                errorMsg.innerText = "Preencha todos os campos!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            if (Number(salarioLiquido) <= 0) {
+                errorMsg.innerText = "Digite um valor válido!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/financecar/regra", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        salarioLiquido: Number(salarioLiquido)
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log(data);
+
+                if (!response.ok) {
+                    errorMsg.innerText =
+                        data.erro || "Erro ao calcular.";
+
+                    errorMsg.style.display = 'block';
+                    resultadoMsg.style.display = 'none';
+                    return;
+                }
+
+                const divisoes =
+                    data.divisoes || data.resultado || data;
+
+                document.getElementById('resNecessidades').innerText =
+                    divisoes.necessidades || "0";
+
+                document.getElementById('resDesejos').innerText =
+                    divisoes.desejos || "0";
+
+                document.getElementById('resInvestimentos').innerText =
+                    divisoes.investimentos_dividas ||
+                    divisoes.investimentos ||
+                    "0";
+
+                resultadoMsg.style.display = 'block';
+                errorMsg.style.display = 'none';
+
+            } catch (error) {
+                console.error(error);
+
+                errorMsg.innerText = "Erro ao calcular.";
+                errorMsg.style.display = 'block';
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>

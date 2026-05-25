@@ -242,6 +242,201 @@ app.get("/exg/help", requireExgAuth, (req, res) => {
   res.render("exg/help", { user: req.session.exgUser });
 });
 
+
+// ROTAS FINANCECAR (Time 6)
+function requireFinanceAuth(req, res, next) {
+  if (req.session && req.session.financeUser) return next();
+
+  res.redirect("/financecar/login");
+}
+
+// SPLASH
+app.get("/financecar", (req, res) => {
+  res.render("financecar/splash");
+});
+
+// LOGIN
+app.get("/financecar/login", (req, res) => {
+  if (req.session.financeUser) {
+    return res.redirect("/financecar/home");
+  }
+
+  res.render("financecar/login", { error: null });
+});
+
+app.post("/financecar/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.render("financecar/login", {
+      error: "Preencha todos os campos",
+    });
+  }
+
+  if (username === "adm" && password === "adm") {
+    req.session.financeUser = {
+      username: "adm",
+      nome: "Administrador",
+    };
+
+    return res.redirect("/financecar/home");
+  }
+
+  res.render("financecar/login", {
+    error: "Usuário ou senha inválidos",
+  });
+});
+
+// LOGOUT
+app.get("/financecar/logout", (req, res) => {
+  req.session.destroy((err) => {
+    res.clearCookie("connect.sid");
+    return res.redirect("/financecar/login");
+  });
+});
+
+// HOME
+app.get("/financecar/home", requireFinanceAuth, (req, res) => {
+  res.render("financecar/home", {
+    user: req.session.financeUser,
+  });
+});
+
+// JUROS
+app.get("/financecar/juros", requireFinanceAuth, (req, res) => {
+  res.render("financecar/juros", {
+    user: req.session.financeUser,
+  });
+});
+
+// FINANCIAMENTO
+app.get("/financecar/financiamento", requireFinanceAuth, (req, res) => {
+  res.render("financecar/financiamento", {
+    user: req.session.financeUser,
+  });
+});
+
+// FUNDO
+app.get("/financecar/fundo", requireFinanceAuth, (req, res) => {
+  res.render("financecar/fundo", {
+    user: req.session.financeUser,
+  });
+});
+
+// REGRA
+app.get("/financecar/regra", requireFinanceAuth, (req, res) => {
+  res.render("financecar/regra", {
+    user: req.session.financeUser,
+  });
+});
+
+// SOBRE
+app.get("/financecar/sobre", requireFinanceAuth, (req, res) => {
+  res.render("financecar/sobre", {
+    user: req.session.financeUser,
+  });
+});
+
+// API JUROS
+app.post("/api/financecar/juros", requireFinanceAuth, async (req, res) => {
+  try {
+    const fetch = (await import("node-fetch")).default;
+
+    const response = await fetch(`${API_URL}/api/financecar/juros`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    const data = await response.json();
+
+    return res.status(response.status).json(data);
+
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
+// API FINANCIAMENTO
+app.post("/api/financecar/financiamento", requireFinanceAuth, async (req, res) => {
+  try {
+    const fetch = (await import("node-fetch")).default;
+
+    const response = await fetch(`${API_URL}/api/financecar/financiamento`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    const data = await response.json();
+
+    res.json(data);
+
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
+// API FUNDO
+app.post("/api/financecar/fundo", requireFinanceAuth, async (req, res) => {
+  try {
+    const fetch = (await import("node-fetch")).default;
+
+    const response = await fetch(`${API_URL}/api/financecar/fundo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    const data = await response.json();
+
+    res.json(data);
+
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
+// API REGRA
+app.post("/api/financecar/regra", requireFinanceAuth, async (req, res) => {
+  try {
+    const fetch = (await import("node-fetch")).default;
+
+    const response = await fetch(`${API_URL}/api/financecar/regra`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    const data = await response.json();
+
+    res.json(data);
+
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
 // Rota CD - serve o React compilado
 app.get("/cdd", (req, res) => {
   res.sendFile(path.join(__dirname, "views/cdd/index.html"));
