@@ -21,7 +21,7 @@ Base local: `http://localhost:3001/api/clt`
 - `POST /custo-empresa`
 - `POST /resultado-contratacao`
 
-Usuario e senha fixos: `adm` / `adm`.
+Usuario e senha fixos: `admin` / `admin`.
 
 ## Rotas do app
 

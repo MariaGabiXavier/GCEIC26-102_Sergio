@@ -238,12 +238,13 @@ app.get('/clt/login', (req, res) => {
 });
 
 app.post('/clt/login', (req, res) => {
-  const { username, password } = req.body;
+  const username = String(req.body.username || '').trim();
+  const password = String(req.body.password || '').trim();
   if (!username || !password) {
     return res.render('clt/login', { error: 'Preencha usuário e senha' });
   }
-  if (username === 'adm' && password === 'adm') {
-    req.session.cltUser = { username: 'adm', nome: 'Administrador' };
+  if (username === 'admin' && password === 'admin') {
+    req.session.cltUser = { username: 'admin', nome: 'Administrador' };
     return res.redirect('/clt/dashboard');
   }
   return res.render('clt/login', { error: 'Usuário ou senha inválidos' });
