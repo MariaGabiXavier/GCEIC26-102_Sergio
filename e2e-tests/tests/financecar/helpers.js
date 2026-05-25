@@ -136,7 +136,7 @@ async function autenticar(driver) {
 
   await click(driver, 'button[type="submit"]');
 
-  await driver.wait(until.urlContains("/home"), 10000);
+  await driver.wait(until.urlContains("/home"), 3000);
 
   const url = await driver.getCurrentUrl();
 
