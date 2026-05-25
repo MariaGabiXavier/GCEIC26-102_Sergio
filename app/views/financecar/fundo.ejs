@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundo de Emergência - FinanceCar</title>
+    <link rel="stylesheet" href="/financecar.css">
+</head>
+<body>
+    <div id="root">
+    <div class="fundo-emergencia-container">
+        <%- include('partials/header') %>
+
+        <div class="help-container">
+            <button class="help-btn" onclick="document.getElementById('helpOverlay').style.display = 'flex'">
+                <img src="/assets/financecar/help.svg" alt="Ajuda" class="help" />
+            </button>
+        </div>            
+
+        <h1>Cálculo de Fundo de Emergência</h1>
+
+        <section class="calculo-fundo">
+            <div class="card-fundo">
+                <input type="number" id="gastosFixos" placeholder="Gastos Fixos Mensais (Aluguel, contas...)" oninput="clearError()" />
+
+                <input type="number" id="gastosVariaveis" placeholder="Gastos Variáveis Mensais (Lazer, extras...)" oninput="clearError()" />
+
+                <input type="number" id="mesesSeguranca" placeholder="Meses de segurança desejados (Ex: 6)" oninput="clearError()" />
+
+                <p class="error" id="errorMsg"></p>
+
+                <button onclick="calcular()" id="btn-calcular">Calcular</button>
+
+                <h2 id="resultadoMsg" style="display: none;"></h2>
+            </div>
+        </section>
+
+        <div class="overlay" id="helpOverlay" style="display: none;" onclick="this.style.display='none'">
+            <div class="modal" onclick="event.stopPropagation()">
+
+                <div class="icon">
+                    <img src="/assets/financecar/money.svg" alt="Fundo de Emergência" class="money" />
+                    <h2>Fundo de Emergência</h2>
+                </div>
+
+                <p>
+                    O fundo de emergência é uma reserva financeira criada para lidar com
+                    imprevistos, como perda de emprego, emergências médicas, consertos
+                    urgentes ou despesas inesperadas.
+                </p>
+
+                <p>
+                    Ter essa reserva ajuda você a enfrentar momentos difíceis sem precisar
+                    fazer dívidas ou comprometer seu orçamento mensal.
+                </p>
+
+                <hr />
+
+                <h3>O que significa cada campo?</h3>
+
+                <p>
+                    <strong>Gastos Fixos:</strong><br />
+                    São despesas que acontecem todos os meses e possuem valores mais previsíveis.
+                    Exemplo: aluguel, energia, internet e alimentação básica.
+                </p>
+
+                <p>
+                    <strong>Gastos Variáveis:</strong><br />
+                    São despesas que podem mudar de valor ao longo do mês.
+                    Exemplo: lazer, delivery, compras e transporte.
+                </p>
+
+                <p>
+                    <strong>Meses de Segurança:</strong><br />
+                    Representa por quantos meses você deseja conseguir se manter financeiramente
+                    caso fique sem renda. O recomendado geralmente é entre 6 e 12 meses.
+                </p>
+
+                <hr />
+
+                <p style="font-weight: bold;" class="icon">
+                    <img src="/assets/financecar/hint.svg" alt="Dica" />
+                    Dica: guardar aos poucos todos os meses ajuda a construir sua segurança financeira!
+                </p>
+
+                <button onclick="document.getElementById('helpOverlay').style.display='none'">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <%- include('partials/logout-popup') %>
+    </div>
+
+    <script>
+        function clearError() {
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        async function calcular() {
+            const gastosFixos = document.getElementById('gastosFixos').value;
+            const gastosVariaveis = document.getElementById('gastosVariaveis').value;
+            const mesesSeguranca = document.getElementById('mesesSeguranca').value;
+
+            const errorMsg = document.getElementById('errorMsg');
+            const resultadoMsg = document.getElementById('resultadoMsg');
+
+            resultadoMsg.style.display = 'none';
+
+            if (!gastosFixos || !gastosVariaveis || !mesesSeguranca) {
+                errorMsg.innerText = "Preencha todos os campos!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            if (
+                Number(gastosFixos) < 0 ||
+                Number(gastosVariaveis) < 0 ||
+                Number(mesesSeguranca) <= 0
+            ) {
+                errorMsg.innerText = "Digite valores válidos!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/financecar/fundo", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        gastosFixosMensais: Number(gastosFixos),
+                        gastosVariaveis: Number(gastosVariaveis),
+                        mesesSeguranca: Number(mesesSeguranca)
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log(data);
+
+                if (!response.ok) {
+                    errorMsg.innerText =
+                        data.erro || "Erro ao calcular o fundo de emergência.";
+
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                const resultado =
+                    data.valorTotalGuardado ||
+                    data.valorTotal ||
+                    data.total ||
+                    data.valor ||
+                    data.resultado ||
+                    data.valorNecessario;
+
+                resultadoMsg.innerText = `Valor Total a Guardar: R$ ${resultado}`;
+                resultadoMsg.style.display = 'block';
+
+                errorMsg.style.display = 'none';
+
+            } catch (err) {
+                console.error(err);
+
+                errorMsg.innerText = "Erro ao calcular o fundo de emergência.";
+                errorMsg.style.display = 'block';
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>

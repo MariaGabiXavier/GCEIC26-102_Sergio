@@ -1,0 +1,18 @@
+<div class="popup-overlay" id="logoutPopup" style="display: none;">
+    <div class="popup">
+        <h2>Deseja sair da sua conta?</h2>
+        <div class="popup-buttons">
+            <button class="cancelar" onclick="document.getElementById('logoutPopup').style.display = 'none'">
+                Cancelar
+            </button>
+            <button class="confirmar" onclick="logout()">
+                Sair
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    function logout() {
+        window.location.href = "/financecar/logout";
+    }
+</script>

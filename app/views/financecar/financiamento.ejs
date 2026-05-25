@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financiamento - FinanceCar</title>
+    <link rel="stylesheet" href="/financecar.css">
+</head>
+<body>
+    <div id="root">
+    <div class="financiamento">
+        <%- include('partials/header') %>
+
+        <div class="help-container">
+            <button class="help-btn" onclick="document.getElementById('helpOverlay').style.display = 'flex'">
+                <img src="/assets/financecar/help.svg" alt="Ajuda" class="help" />
+            </button>
+        </div>            
+
+        <h1>Financiamento de Veículo</h1>
+
+        <section class="calculo-financiamento">
+            <div class="card-financiamento">
+                <input type="number" id="valorVeiculo" placeholder="Valor do veículo" oninput="clearError()" />
+                <input type="number" id="entrada" placeholder="Entrada" oninput="clearError()" />
+                <input type="number" id="taxaJuros" placeholder="Taxa de juros (%) ao mês" oninput="clearError()" />
+                <input type="number" id="parcelas" placeholder="Número de parcelas" oninput="clearError()" />
+
+                <p class="error" id="errorMsg" style="display: none;"></p>
+
+                <button onclick="calcular()" id="btn-calcular">Calcular</button>
+
+                <h2 id="resultadoMsg" style="display: none;"></h2>
+            </div>
+        </section>
+
+        <div class="overlay" id="helpOverlay" style="display: none;" onclick="this.style.display='none'">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="icon">
+                    <img src="/assets/financecar/car.svg" alt="Financiamento de Veículo" class="car" />
+                    <h2>Financiamento de Veículo</h2>
+                </div>
+
+                <p>
+                    Financiamento de veículo é quando você pega um valor emprestado para comprar um carro
+                    e paga esse valor de volta em parcelas com juros.
+                </p>
+
+                <p>
+                    O banco paga o valor do carro para você e você devolve esse dinheiro ao longo do tempo,
+                    com acréscimo de juros.
+                </p>
+
+                <hr />
+
+                <h3>O que significa cada campo?</h3>
+
+                <p>
+                    <strong>Valor do veículo:</strong><br />
+                    É o preço total do carro que você quer financiar. Exemplo: R$ 50.000.
+                </p>
+
+                <p>
+                    <strong>Entrada:</strong><br />
+                    É o valor que você paga no início para reduzir a dívida. Exemplo: R$ 10.000.
+                </p>
+
+                <p>
+                    <strong>Taxa de juros:</strong><br />
+                    É a porcentagem cobrada sobre o valor financiado. Exemplo: 1,5% ao mês.
+                </p>
+
+                <p>
+                    <strong>Parcelas:</strong><br />
+                    É a quantidade de meses que você vai pagar o financiamento.
+                </p>
+
+                <hr />
+
+                <p style="font-weight: bold;" class="icon">
+                    <img src="/assets/financecar/hint.svg" alt="Dica" />
+                    Dica: quanto maior a entrada, menor fica o valor das parcelas!
+                </p>
+
+                <button onclick="document.getElementById('helpOverlay').style.display='none'">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <%- include('partials/logout-popup') %>
+    </div>
+
+    <script>
+        function clearError() {
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        async function calcular() {
+            const valorVeiculo = document.getElementById('valorVeiculo').value;
+            const entrada = document.getElementById('entrada').value;
+            const taxaJuros = document.getElementById('taxaJuros').value;
+            const parcelas = document.getElementById('parcelas').value;
+
+            const errorMsg = document.getElementById('errorMsg');
+            const resultadoMsg = document.getElementById('resultadoMsg');
+
+            resultadoMsg.style.display = 'none';
+
+            if (!valorVeiculo || !entrada || !taxaJuros || !parcelas) {
+                errorMsg.innerText = "Preencha todos os campos!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            if (
+                Number(valorVeiculo) <= 0 ||
+                Number(entrada) < 0 ||
+                Number(taxaJuros) <= 0 ||
+                Number(parcelas) <= 0
+            ) {
+                errorMsg.innerText = "Digite valores válidos!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/financecar/financiamento", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        valorVeiculo: Number(valorVeiculo),
+                        entrada: Number(entrada),
+                        taxaJuros: Number(taxaJuros),
+                        parcelas: Number(parcelas)
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log(data);
+
+                if (!response.ok) {
+                    errorMsg.innerText = data.erro || "Erro ao calcular financiamento.";
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                const parcela =
+                    data.valorParcela ||
+                    data.parcelaMensal ||
+                    data.parcela ||
+                    data.valor;
+
+                resultadoMsg.innerText = `Parcela: R$ ${parcela}`;
+                resultadoMsg.style.display = 'block';
+
+                errorMsg.style.display = 'none';
+
+            } catch (err) {
+                errorMsg.innerText = "Erro ao conectar com o servidor.";
+                errorMsg.style.display = 'block';
+            }
+        }
+    </script>
+    </div>
+</body>
+</html>
