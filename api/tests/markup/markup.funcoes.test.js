@@ -1,4 +1,8 @@
-const { calcularMKM, calcularPrecoVenda, calcularMargemLucro, calcularDesconto } = require('../src/funcoes');
+// ============================================================
+// Markup — Testes Unitários (Jest)
+// ============================================================
+
+const { calcularMKM, calcularPrecoVenda, calcularDesconto } = require('../../src/markup/markup.funcoes');
 
 describe('calcularMKM', () => {
   test('deve calcular MKM com valores válidos', () => {
@@ -28,6 +32,7 @@ describe('calcularMKM', () => {
     expect(isNaN(resultado)).toBe(false);
   });
 });
+
 describe('calcularPrecoVenda', () => {
   test('deve calcular preço de venda com valores válidos', () => {
     expect(calcularPrecoVenda({ preco: 100, dv: 10, df: 15, ml: 20 })).toBe('181.82');
