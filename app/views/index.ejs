@@ -340,6 +340,26 @@
   <footer>
     &copy; <%= new Date().getFullYear() %> &nbsp;·&nbsp; GEIEC
   </footer>
+ <script>
+    const STORAGE_KEY = 'equipes-theme';
 
+    function applyTheme(theme) {
+      const isLight = theme === 'light';
+      document.documentElement.classList.toggle('light', isLight);
+      document.getElementById('toggle-label').textContent = isLight ? 'Light' : 'Dark';
+      document.getElementById('toggle-knob').textContent  = isLight ? '☀' : '☽';
+    }
+
+    function toggleTheme() {
+      const isLight = document.documentElement.classList.contains('light');
+      const next = isLight ? 'dark' : 'light';
+      localStorage.setItem(STORAGE_KEY, next);
+      applyTheme(next);
+    }
+
+    // Restore saved preference on load
+    const saved = localStorage.getItem(STORAGE_KEY) || 'dark';
+    applyTheme(saved);
+  </script>
 </body>
 </html>
