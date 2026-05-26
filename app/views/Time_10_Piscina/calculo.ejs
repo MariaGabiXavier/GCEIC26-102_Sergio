@@ -7,7 +7,7 @@
 
   <title>Calculadora de Piscina</title>
 
-  <link rel="stylesheet" href="/piscina.css">
+  <link rel="stylesheet" href="../../public/piscina.css">
 
 </head>
 
@@ -15,10 +15,10 @@
 
   <nav>
 
-    <a href="/piscina/calculo">Cálculo</a>
-    <a href="/piscina/sobre">Sobre</a>
-    <a href="/piscina/help">Help</a>
-    <a href="/piscina/logout">Logout</a>
+    <a href="/calculo">Cálculo</a>
+    <a href="/sobre">Sobre</a>
+    <a href="/help">Help</a>
+    <a href="/logout">Logout</a>
 
   </nav>
 
@@ -28,10 +28,11 @@
 
       <h1>Calculadora de Piscina</h1>
 
-      <form method="POST" action="/piscina/calculo">
+      <form method="POST" action="/calculo">
 
         <input
           type="number"
+          id="comprimento"
           step="0.1"
           name="comprimento"
           placeholder="Comprimento (m)"
@@ -40,6 +41,7 @@
 
         <input
           type="number"
+          id="largura"
           step="0.1"
           name="largura"
           placeholder="Largura (m)"
@@ -48,6 +50,7 @@
 
         <input
           type="number"
+          id="profundidade"
           step="0.1"
           name="profundidade"
           placeholder="Profundidade (m)"
@@ -79,41 +82,27 @@
 
       <% if (resultado && resultado.success) { %>
 
-        <div class="resultado">
+      <div id="modalResultado" class="modal show">
+        <div class="modal-content">
+
+          <span class="close" onclick="document.getElementById('modalResultado').style.display='none'">&times;</span>
 
           <h2>Resultado</h2>
 
-          <p>
-            <strong>Volume:</strong>
-            <%= resultado.data.volume_m3 %> m³
-          </p>
+          <p><strong>Volume:</strong> <%= resultado.data.volume_m3 %> m³</p>
 
-          <p>
-            <strong>Custo da Água:</strong>
-            R$ <%= resultado.data.custo_agua %>
-          </p>
+          <p><strong>Custo da Água:</strong> R$ <%= resultado.data.custo_agua %></p>
 
-          <p>
-            <strong>Custo Elétrico:</strong>
-            R$ <%= resultado.data.custo_eletrico %>
-          </p>
+          <p><strong>Custo Elétrico:</strong> R$ <%= resultado.data.custo_eletrico %></p>
 
-          <p>
-            <strong>Custo Hidráulico:</strong>
-            R$ <%= resultado.data.custo_hidraulico %>
-          </p>
+          <p><strong>Custo Hidráulico:</strong> R$ <%= resultado.data.custo_hidraulico %></p>
 
-          <p>
-            <strong>Total Construção:</strong>
-            R$ <%= resultado.data.total_construcao %>
-          </p>
+          <p><strong>Total Construção:</strong> R$ <%= resultado.data.total_construcao %></p>
 
-          <p>
-            <strong>Manutenção Mensal:</strong>
-            R$ <%= resultado.data.manutencao_mensal %>
-          </p>
+          <p><strong>Manutenção Mensal:</strong> R$ <%= resultado.data.manutencao_mensal %></p>
 
         </div>
+      </div>
 
       <% } %>
 

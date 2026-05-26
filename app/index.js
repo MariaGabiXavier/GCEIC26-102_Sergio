@@ -438,7 +438,9 @@ app.post("/api/financecar/regra", requireFinanceAuth, async (req, res) => {
   }
 });
 
+// ============================================================
 // -- Time_10_Piscina --
+// ============================================================
 
 function requirePiscinaAuth(req, res, next) {
   if (req.session && req.session.piscinaUser) return next();
