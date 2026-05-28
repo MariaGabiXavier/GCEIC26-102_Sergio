@@ -67,6 +67,12 @@ async function autenticarPiscina() {
 
   await driver.sleep(1000);
 
+  const urlAtual = await driver.getCurrentUrl();
+
+  if (!urlAtual.includes("/login")) {
+    return;
+  }
+
   const usuario = await driver.findElement(
     By.name("username")
   );

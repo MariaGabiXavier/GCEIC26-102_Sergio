@@ -2,12 +2,13 @@ const { Builder, By } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 const fs = require("fs");
 const path = require("path");
+const runPiscinaTests = require("./Time_10_piscina/piscina-all-screens.test.js");
 const runExgTests = require("./exg/exg-all-screens.test.js");
 const runCddTests = require("./cdd/cdd-all-screens.test.js");
 const runCltTests = require("./clt/clt-all-screens.test.js");
 const runFinanceTests = require("./financecar/financecar-all-screens.test.js");
 const runMkpTests = require("./mkp/mkp-all-screens.test.js");
-const runPiscinaTests = require("./Time_10_piscina/piscina-all-screens.test.js");
+
 
 const BASE_URL = process.env.APP_URL || "http://localhost:3000";
 const SCREENSHOTS_DIR = path.join(__dirname, "..", "screenshots");

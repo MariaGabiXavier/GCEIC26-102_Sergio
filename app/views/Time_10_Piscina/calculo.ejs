@@ -15,10 +15,10 @@
 
   <nav>
 
-    <a href="/calculo">Cálculo</a>
-    <a href="/sobre">Sobre</a>
-    <a href="/help">Help</a>
-    <a href="/logout">Logout</a>
+    <a href="/piscina/calculo">Cálculo</a>
+    <a href="/piscina/sobre">Sobre</a>
+    <a href="/piscina/help">Help</a>
+    <a href="/piscina/logout">Logout</a>
 
   </nav>
 
@@ -28,8 +28,8 @@
 
       <h1>Calculadora de Piscina</h1>
 
-      <form method="POST" action="/calculo">
-
+      <form method="POST" action="/piscina/calculo">
+          
         <input
           type="number"
           id="comprimento"
@@ -89,18 +89,17 @@
 
           <h2>Resultado</h2>
 
-          <p><strong>Volume:</strong> <%= resultado.data.volume_m3 %> m³</p>
+          <p><strong>Volume:</strong> <%= resultado.data.volume %> m³</p>
 
-          <p><strong>Custo da Água:</strong> R$ <%= resultado.data.custo_agua %></p>
+          <p><strong>Custo da Água:</strong> R$ <%= resultado.data.custoAgua %></p>
 
-          <p><strong>Custo Elétrico:</strong> R$ <%= resultado.data.custo_eletrico %></p>
+          <p><strong>Custo Elétrico:</strong> R$ <%= resultado.data.custoEletrico %></p>
 
-          <p><strong>Custo Hidráulico:</strong> R$ <%= resultado.data.custo_hidraulico %></p>
+          <p><strong>Custo Hidráulico:</strong> R$ <%= resultado.data.custoHidraulico %></p>
 
-          <p><strong>Total Construção:</strong> R$ <%= resultado.data.total_construcao %></p>
+          <p><strong>Total Construção:</strong> R$ <%= resultado.data.total %></p>
 
-          <p><strong>Manutenção Mensal:</strong> R$ <%= resultado.data.manutencao_mensal %></p>
-
+          <p><strong>Manutenção Mensal:</strong> R$ <%= resultado.data.manutencao %></p>
         </div>
       </div>
 
